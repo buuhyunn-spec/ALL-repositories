@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --color-accent: #1B6547;
+  --color-accent-light: #C4E2D3;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: 'Fraunces', Georgia, serif;
+}
