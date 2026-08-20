@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Equity Track INC PH — Unified AI Prompt System: Reviewer & Certification Exam</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --navy:#0b1c2c;
+    --navy2:#12283d;
+    --red:#c0392b;
+    --red2:#e74c3c;
+    --gold:#d4a017;
+    --paper:#f4f1ea;
+    --ink:#1a1a1a;
+    --gray:#5c6570;
+    --green:#1e7e34;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI',Arial,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.5;
+  }
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:28px 20px;
+    text-align:center;
+    border-bottom:6px solid var(--red);
+  }
+  header .tag{
+    letter-spacing:3px;
+    font-size:12px;
+    color:var(--gold);
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  header h1{
+    margin:4px 0;
+    font-size:28px;
+  }
+  header p{
+    margin:6px 0 0;
+    color:#c7d0d9;
+    font-size:14px;
+  }
+  .noexec{
+    background:var(--red);
+    color:#fff;
+    text-align:center;
+    font-weight:700;
+    padding:10px;
+    font-size:14px;
+    letter-spacing:0.5px;
+  }
+  .tabs{
+    display:flex;
+    max-width:960px;
+    margin:24px auto 0;
+    border-bottom:3px solid var(--navy);
+  }
+  .tabbtn{
+    flex:1;
+    padding:14px 10px;
+    background:#e4ded0;
+    border:none;
+    cursor:pointer;
+    font-weight:700;
+    font-size:15px;
+    color:var(--navy);
+    letter-spacing:0.5px;
+  }
+  .tabbtn.active{
+    background:var(--navy);
+    color:#fff;
+  }
+  main{
+    max-width:960px;
+    margin:0 auto 60px;
+    padding:0 20px;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  .card{
+    background:#fff;
+    border:1px solid #ddd6c5;
+    border-left:6px solid var(--navy);
+    border-radius:4px;
+    padding:18px 22px;
+    margin:18px 0;
+  }
+  .card.gate{
+    border-left-color:var(--red);
+    background:#fdf1ef;
+  }
+  .card h2{
+    margin-top:0;
+    color:var(--navy);
+    font-size:18px;
+    border-bottom:2px solid var(--gold);
+    padding-bottom:6px;
+  }
+  .card h3{
+    color:var(--red);
+    font-size:15px;
+    margin-bottom:6px;
+  }
+  .card ul{margin:6px 0 14px 20px;padding:0;}
+  .card li{margin-bottom:4px;}
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .scenario{
+    background:#fff;
+    border:1px solid #ddd6c5;
+    border-radius:4px;
+    padding:12px 16px;
+  }
+  .scenario .num{
+    display:inline-block;
+    background:var(--navy);
+    color:#fff;
+    font-weight:700;
+    font-size:12px;
+    padding:2px 8px;
+    border-radius:3px;
+    margin-right:8px;
+  }
+  .scenario h4{margin:6px 0 6px;color:var(--navy);font-size:15px;}
+  .scenario ul{margin:0 0 0 20px;padding:0;font-size:13.5px;color:#333;}
+  .scenario li{margin-bottom:3px;}
+  .callout{
+    background:var(--navy);
+    color:#fff;
+    padding:14px 18px;
+    border-radius:4px;
+    margin:20px 0;
+    font-size:14px;
+  }
+  .callout b{color:var(--gold);}
+  .intro-block{
+    background:#fff;
+    border:1px solid #ddd6c5;
+    border-radius:4px;
+    padding:18px 22px;
+    margin:18px 0 24px;
+  }
+  .intro-block p{margin:0 0 10px;}
+  .intro-block p:last-child{margin-bottom:0;}
+  form#examForm{margin-top:10px;}
+  .q{
+    background:#fff;
+    border:1px solid #ddd6c5;
+    border-radius:4px;
+    padding:16px 20px;
+    margin-bottom:14px;
+  }
+  .q p.qtext{
+    font-weight:700;
+    margin:0 0 10px;
+    color:var(--navy);
+  }
+  .q .qnum{
+    color:var(--red);
+    margin-right:6px;
+  }
+  .opt{
+    display:block;
+    padding:7px 10px;
+    margin-bottom:6px;
+    border-radius:3px;
+    cursor:pointer;
+    border:1px solid transparent;
+  }
+  .opt:hover{background:#f0ece0;}
+  .opt input{margin-right:8px;}
+  .q.correct{border-left:5px solid var(--green);}
+  .q.incorrect{border-left:5px solid var(--red);}
+  .opt.answer-correct{background:#e6f4ea;border-color:var(--green);font-weight:700;}
+  .opt.answer-wrong{background:#fbe9e7;border-color:var(--red);text-decoration:line-through;color:#8a2b22;}
+  #submitBtn, #retryBtn{
+    display:block;
+    width:100%;
+    padding:16px;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:1px;
+    background:var(--red);
+    color:#fff;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+    margin-top:10px;
+  }
+  #submitBtn:hover, #retryBtn:hover{background:var(--red2);}
+  #retryBtn{background:var(--navy);display:none;}
+  #retryBtn:hover{background:var(--navy2);}
+  #resultBox{
+    display:none;
+    margin-top:20px;
+    padding:22px;
+    border-radius:6px;
+    text-align:center;
+    font-size:16px;
+  }
+  #resultBox h2{margin-top:0;font-size:26px;}
+  #resultBox.pass{background:#e6f4ea;border:2px solid var(--green);color:#155724;}
+  #resultBox.fail{background:#fdecea;border:2px solid var(--red);color:#7d211a;}
+  #scoreLine{font-size:34px;font-weight:800;margin:6px 0;}
+  footer{
+    text-align:center;
+    color:var(--gray);
+    font-size:12px;
+    padding:20px;
+  }
+  .progress-wrap{
+    max-width:960px;margin:14px auto 0;padding:0 20px;
+  }
+  .progress-track{
+    background:#ddd6c5;height:8px;border-radius:4px;overflow:hidden;
+  }
+  .progress-fill{
+    background:var(--red);height:100%;width:0%;transition:width .2s;
+  }
+  .progress-label{font-size:12px;color:var(--gray);margin-top:4px;text-align:right;}
+  /* ---- Login gate ---- */
+  body.pre-login > *:not(#loginOverlay){display:none !important;}
+  #loginOverlay{
+    position:fixed;inset:0;background:var(--navy);
+    display:flex;align-items:center;justify-content:center;
+    z-index:999;padding:20px;
+  }
+  .login-card{
+    background:#fff;border-radius:8px;padding:34px 30px;
+    max-width:420px;width:100%;text-align:center;
+    border-top:6px solid var(--red);
+  }
+  .login-card .tag{letter-spacing:3px;font-size:11px;color:var(--red);font-weight:700;margin-bottom:6px;}
+  .login-card h2{color:var(--navy);margin:6px 0 4px;font-size:22px;}
+  .login-card p{color:var(--gray);font-size:13.5px;margin:0 0 18px;}
+  .login-card input[type="text"]{
+    width:100%;padding:12px;font-size:15px;border:1px solid #ccc;
+    border-radius:4px;margin-bottom:6px;
+  }
+  .login-card .err{color:var(--red);font-size:12.5px;min-height:16px;margin-bottom:10px;text-align:left;}
+  .login-card button{
+    width:100%;padding:14px;background:var(--red);color:#fff;border:none;
+    border-radius:4px;font-weight:700;letter-spacing:0.5px;cursor:pointer;font-size:15px;
+  }
+  .login-card button:hover{background:var(--red2);}
+  .login-card .fineprint{margin-top:14px;font-size:11.5px;color:#8a8a8a;}
+  #sessionNotice{
+    display:none;text-align:left;background:#fff8e6;border:1px solid var(--gold);
+    color:#5c4a06;font-size:12.5px;padding:10px 12px;border-radius:4px;margin-bottom:12px;
+  }
+  #clearSessionBtn{
+    display:none;width:100%;background:transparent;color:var(--red);
+    border:1px solid var(--red);padding:8px;border-radius:4px;font-size:12px;
+    font-weight:700;cursor:pointer;margin-top:8px;
+  }
+  #clearSessionBtn:hover{background:#fdecea;}
+  /* ---- Timer ---- */
+  #timerBar{
+    background:var(--navy2);color:#fff;text-align:center;
+    padding:8px 10px;font-size:14px;font-weight:700;letter-spacing:0.5px;
+    border-bottom:2px solid var(--gold);
+  }
+  #timerBar span#timeLeft{font-variant-numeric:tabular-nums;}
+  #timerBar.warn{background:var(--red);}
+  /* ---- Report ---- */
+  #reportRow{display:flex;gap:10px;margin-top:12px;}
+  #reportRow button{
+    flex:1;padding:14px;font-weight:700;letter-spacing:0.5px;
+    border:none;border-radius:4px;cursor:pointer;font-size:14px;
+  }
+  #emailBtn{background:var(--navy);color:#fff;}
+  #emailBtn:hover{background:var(--navy2);}
+  #reportStatus{font-size:12.5px;color:var(--gray);margin-top:8px;}
+</style>
+</head>
+<body class="pre-login">
+<div id="loginOverlay">
+  <div class="login-card">
+    <div class="tag">EQUITY TRACK INC PH</div>
+    <h2>Enter Your Name to Begin</h2>
+    <p>You must identify yourself before accessing the Reviewer or the Certification Exam. The 1-hour clock only starts once you actually open the exam — not while you're studying the Reviewer. Refreshing this page always requires logging in again.</p>
+    <div id="sessionNotice"></div>
+    <input type="text" id="nameInput" placeholder="Full Name" autocomplete="off">
+    <div class="err" id="nameErr"></div>
+    <button onclick="doLogin()">LOG IN</button>
+    <button id="clearSessionBtn" onclick="clearSessionAndRefreshNotice()">CLEAR SAVED SESSION — START FRESH</button>
+    <div class="fineprint">Results email to bryan@twinhomebuyer.com on submit.</div>
+  </div>
+</div>
+<header>
+  <div class="tag">EQUITY TRACK INC PH — LEADERSHIP OPS</div>
+  <h1>Unified AI Prompt System</h1>
+  <p>Reviewer + Certification Exam — Master AI Prompt Question Bank &amp; Strict Task Intake Process</p>
+</header>
+<div id="timerBar">TAKER: <span id="takerNameDisplay">—</span> &nbsp;|&nbsp; TIME REMAINING: <span id="timeLeft">60:00</span> <span id="timerNote">(clock starts when you open the exam)</span></div>
+<div class="noexec">NO VAGUE PROMPTING. NO FREESTYLE GUESSING. NO EXECUTION WITHOUT CLARITY.</div>
+<div class="tabs">
+  <button class="tabbtn active" onclick="showTab('reviewer')">📘 REVIEWER</button>
+  <button class="tabbtn" onclick="showTab('exam')">✅ CERTIFICATION EXAM</button>
+</div>
+<main>
+<!-- ================= REVIEWER ================= -->
+<section id="reviewer" class="panel active">
+  <div class="intro-block">
+    <p><b>Straight talk, no filler.</b> This system exists because vague prompting wastes time and kills deals. You do not touch a task — a link, a file, a doc, a screenshot, a forwarded chat, a message from Juan or Cherry — until you've run it through this process. Read this once. Then go pass the exam at 80% or better. If you can't, you're not cleared to execute on live work yet.</p>
+    <p><b>Bottom line standard:</b> before doing anything, you must be able to state the objective, the deliverable, what success looks like, and the recommendation or intended result. Four questions. If you can't answer all four clearly — stop. Do not proceed.</p>
+  </div>
+  <div class="card gate">
+    <h2>🔴 Section 1 — Strict Intake Process (Link / File / Task)</h2>
+    <p>Applies any time you receive a link, Google Doc, spreadsheet, screenshot, forwarded conversation, or a task message from Juan or Cherry. You are <b>not</b> allowed to start execution immediately.</p>
+    <h3>Step 1 — Identity + Context Prompt</h3>
+    <ul>
+      <li>State who you are and where the item came from (Juan / Cherry).</li>
+      <li>Ask: what is this about, what's the full context, what's the real objective, what am I expected to deliver.</li>
+      <li>Break it into 5 parts: <b>Objective, Expected Deliverable, What success looks like, Possible deadline, First action step.</b></li>
+      <li>All 5 must be clear before you move.</li>
+    </ul>
+    <h3>Step 2 — Define the Finish Line</h3>
+    <ul>
+      <li>What does a high-quality final output look like?</li>
+      <li>What's the exact structure to follow?</li>
+      <li>What separates average from excellent here?</li>
+      <li>What risks exist?</li>
+      <li>What would an executive expect to see?</li>
+      <li>Can't picture the finished product? <b>Stop.</b></li>
+    </ul>
+    <h3>Execution Gate — Non-Negotiable</h3>
+    <p>You are not ready to execute unless you can clearly state: <b>the objective, the deliverable, the success criteria, and the recommendation/intended outcome.</b> Can't state all four? Clarify before acting.</p>
+  </div>
+  <div class="card">
+    <h2>🔹 Section 2 — The 15 Scenario Prompt Banks</h2>
+    <div class="scenario-grid">
+      <div class="scenario"><span class="num">2</span><h4>If the Task Is Unclear</h4>
+        <ul><li>Explain it in simple terms</li><li>Real goal behind it?</li><li>What outcome does leadership expect?</li><li>What to clarify before proceeding?</li><li>What assumptions am I making / not thinking about?</li></ul></div>
+      <div class="scenario"><span class="num">3</span><h4>Before Starting Execution</h4>
+        <ul><li>What does a high-quality output look like?</li><li>Exact structure to follow?</li><li>Average vs. excellent?</li><li>Risks?</li><li>Likely mistake here?</li></ul></div>
+      <div class="scenario"><span class="num">4</span><h4>If Reviewing a Document</h4>
+        <ul><li>Key points?</li><li>Problems or risks?</li><li>What's missing?</li><li>What decision is needed?</li><li>Your recommendation?</li><li>Follow-up question leadership would ask?</li></ul></div>
+      <div class="scenario"><span class="num">5</span><h4>If Analyzing a Situation</h4>
+        <ul><li>Current situation?</li><li>Main problems?</li><li>Available options + pros/cons?</li><li><b>Strongest recommendation?</b></li><li><b>What could go wrong?</b></li></ul></div>
+      <div class="scenario"><span class="num">6</span><h4>If Building an Execution Plan</h4>
+        <ul><li>Clear objective?</li><li>Exact steps + logical order?</li><li>Timeline that makes sense?</li><li>Risks?</li><li>Measurable outcome?</li></ul></div>
+      <div class="scenario"><span class="num">7</span><h4>If Improving/Optimizing</h4>
+        <ul><li>Current state? Where's the gap?</li><li>Why underperforming?</li><li>Highest-impact improvement?</li><li>How do we measure it?</li><li>What would a top-performing company do?</li></ul></div>
+      <div class="scenario"><span class="num">8</span><h4>Before Escalating a Problem</h4>
+        <ul><li><b>Attempt structured thinking first.</b></li><li>3 possible solutions to try first?</li><li>Root cause?</li><li>Small fix I can apply now?</li><li>What am I missing? What would the decision-maker do?</li><li>Escalate only after a structured attempt.</li></ul></div>
+      <div class="scenario"><span class="num">9</span><h4>When Drafting Communication</h4>
+        <ul><li>Clear and structured? Professional tone?</li><li>Concise?</li><li>What's unclear?</li><li>How to improve for executive readability?</li></ul></div>
+      <div class="scenario"><span class="num">10</span><h4>Before Submitting to Leadership</h4>
+        <ul><li>Objective clearly stated? Format structured?</li><li>Clear recommendation?</li><li>Likely follow-up question?</li><li>What's weak or incomplete?</li><li><b>Final check: "If I were a strict COO/CEO reviewing this, what would I criticize?" Revise before sending.</b></li></ul></div>
+      <div class="scenario"><span class="num">11</span><h4>When Short on Time</h4>
+        <ul><li>Minimum viable way to do this properly?</li><li>What's unnecessary?</li><li>What must be included / can be simplified?</li></ul></div>
+      <div class="scenario"><span class="num">12</span><h4>To Think at a Higher Level</h4>
+        <ul><li>What would a top 1% performer do differently?</li><li>My blind spots?</li><li>Long-term impact? Strategic risk being ignored?</li><li>Smarter approach?</li></ul></div>
+      <div class="scenario"><span class="num">13</span><h4>Data Team (Property Review)</h4>
+        <ul><li>Condition category from public info?</li><li>Heavy vs. light rehab indicators?</li><li>Market risks / red flags?</li><li>What data would improve the assessment?</li></ul></div>
+      <div class="scenario"><span class="num">14</span><h4>Sales Team</h4>
+        <ul><li>Real objection behind the statement?</li><li>What response builds trust?</li><li>Next question to ask?</li><li>What mistake weakens my position?</li><li>How do I structure this to move toward close?</li></ul></div>
+      <div class="scenario"><span class="num">15</span><h4>Operations / Process Improvement</h4>
+        <ul><li>Where are the inefficiencies / redundant steps?</li><li>What can be automated?</li><li>What KPI should we track?</li><li>What's the bottleneck?</li></ul></div>
+    </div>
+  </div>
+  <div class="callout">
+    <b>Core Standard (Non-Negotiable):</b> Before doing any task, every team member states: 1) the objective, 2) the deliverable, 3) what success looks like, 4) the recommendation or intended result. Can't answer all four clearly? <b>Execution must stop.</b>
+  </div>
+  <div class="card">
+    <h2>🎯 Juan Diaz Operating Style — Apply This to Every Output</h2>
+    <p style="font-size:13.5px;color:#333;">Per the internal PI-style role fit assessment: Juan is a fast, independent, decisive Individualist/Producer profile. High urgency, low patience for slow process, direct communicator. This is why the intake process above exists — it forces clarity <i>before</i> you bring him anything.</p>
+    <h3>Do This When Bringing Juan Anything</h3>
+    <ul>
+      <li>Get to the point fast. Bring facts, numbers, options.</li>
+      <li>Lead with the expected result, not the backstory.</li>
+      <li>Make a recommendation — don't just report a problem.</li>
+      <li>Best format: <b>Issue → Impact → Options → Recommendation → Decision Needed.</b></li>
+    </ul>
+    <h3>Avoid This</h3>
+    <ul>
+      <li>Rambling, vague updates, long emotional lead-ins before the facts.</li>
+      <li>Bringing a problem with no options.</li>
+      <li>Guaranteeing outcomes when risk exists. Hiding bad news. Leaving open loops.</li>
+    </ul>
+  </div>
+  <button id="toExamBtn" onclick="showTab('exam')" style="display:block;width:100%;padding:16px;font-size:16px;font-weight:700;letter-spacing:1px;background:var(--navy);color:#fff;border:none;border-radius:4px;cursor:pointer;margin:20px 0 40px;">TAKE THE CERTIFICATION EXAM →</button>
+</section>
+<!-- ================= EXAM ================= -->
+<section id="exam" class="panel">
+  <div class="intro-block">
+    <p><b>Certification standard: 80%.</b> Below that, you are not cleared to run live tasks against this system yet. Answer every question. No partial credit for guessing — know the process cold.</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 24 answered</div>
+  </div>
+  <form id="examForm">
+    <!-- Questions injected by JS -->
+  </form>
+  <button id="submitBtn" onclick="gradeExam()" type="button">SUBMIT FOR GRADING</button>
+  <button id="retryBtn" onclick="resetExam()" type="button">RETAKE EXAM</button>
+  <div id="resultBox">
+    <div id="resultTitle"></div>
+    <div id="scoreLine"></div>
+    <div id="resultMsg"></div>
+    <div id="reportRow">
+      <button id="emailBtn" onclick="sendReport()">📧 EMAIL REPORT TO BRYAN</button>
+    </div>
+    <div id="reportStatus"></div>
+  </div>
+</section>
+</main>
+<footer>Twin Home Buyer | Equity Track INC PH — Unified AI Prompt System Reviewer &amp; Exam</footer>
+<script>
+const REPORT_EMAIL = "bryan@twinhomebuyer.com";
+const EXAM_SECONDS = 60*60; // 1 hour
+const SESSION_KEY = "eqtrack_uap_exam_session_v1";
+let takerName = "";
+let timeRemaining = EXAM_SECONDS;
+let timerInterval = null;
+let examStarted = false;
+let examStartTime = null;
+let examSubmitted = false;
+let lastScore = 0, lastPct = 0, lastMissed = [];
+let answers = []; // filled once questions[] exists below
+function loadSession(){
+  try{
+    const raw = localStorage.getItem(SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  }catch(e){ return null; }
+}
+function saveSession(){
+  const session = {
+    name: takerName,
+    examStarted: examStarted,
+    examStartTime: examStartTime,
+    submitted: examSubmitted,
+    answers: answers,
+    result: examSubmitted ? { score:lastScore, pct:lastPct, missed:lastMissed, submittedAt: Date.now() } : null
+  };
+  try{ localStorage.setItem(SESSION_KEY, JSON.stringify(session)); }catch(e){}
+}
+function clearSessionStorage(){
+  try{ localStorage.removeItem(SESSION_KEY); }catch(e){}
+}
+function showSessionNotice(){
+  const session = loadSession();
+  const box = document.getElementById('sessionNotice');
+  const clearBtn = document.getElementById('clearSessionBtn');
+  if(!session || !session.name){
+    box.style.display='none';
+    clearBtn.style.display='none';
+    return;
+  }
+  box.style.display='block';
+  clearBtn.style.display='block';
+  if(session.submitted && session.result){
+    const word = session.result.pct>=80 ? 'CLEARED' : 'NOT CLEARED';
+    box.innerHTML = `<b>Last session found:</b> ${session.name} — submitted ${new Date(session.result.submittedAt).toLocaleString()} — Score ${session.result.pct}% (${word}). Log in with the same name to review it, or clear it to start fresh.`;
+  } else if(session.examStarted){
+    const elapsed = Math.floor((Date.now()-session.examStartTime)/1000);
+    const remaining = EXAM_SECONDS - elapsed;
+    if(remaining>0){
+      box.innerHTML = `<b>Session in progress:</b> ${session.name} — clock is still running (~${Math.ceil(remaining/60)} min left). Log in with the same name to resume where you left off.`;
+    } else {
+      box.innerHTML = `<b>Session expired:</b> ${session.name} — the 1-hour clock ran out. Log in with the same name to auto-submit what was answered.`;
+    }
+  } else {
+    box.innerHTML = `<b>Draft session found:</b> ${session.name} hasn't started the exam yet. Log in with the same name to continue, or clear it to start fresh.`;
+  }
+}
+function clearSessionAndRefreshNotice(){
+  clearSessionStorage();
+  document.getElementById('nameInput').value='';
+  showSessionNotice();
+}
+function doLogin(){
+  const input = document.getElementById('nameInput');
+  const err = document.getElementById('nameErr');
+  const name = input.value.trim();
+  if(name.length < 2){
+    err.textContent = "Enter your full name. No name, no access.";
+    return;
+  }
+  const session = loadSession();
+  if(session && session.name && session.name.toLowerCase() === name.toLowerCase()){
+    // Resuming a detected session for this same name
+    takerName = session.name;
+    answers = (session.answers && session.answers.length===questions.length) ? session.answers : new Array(questions.length).fill(null);
+    restoreAnswersToForm();
+    finalizeLogin();
+    if(session.submitted && session.result){
+      lastScore = session.result.score;
+      lastPct = session.result.pct;
+      lastMissed = session.result.missed;
+      showTab('exam');
+      restoreSubmittedUI();
+      return;
+    }
+    if(session.examStarted){
+      examStarted = true;
+      examStartTime = session.examStartTime;
+      const elapsedSec = Math.floor((Date.now()-examStartTime)/1000);
+      timeRemaining = Math.max(0, EXAM_SECONDS - elapsedSec);
+      showTab('exam');
+      if(timeRemaining<=0){
+        gradeExam(true);
+      } else {
+        startTimer();
+        updateProgress();
+      }
+      return;
+    }
+    // draft session, exam not started yet — nothing more to do
+    return;
+  }
+  // New taker / different name — fresh session
+  takerName = name;
+  answers = new Array(questions.length).fill(null);
+  examStarted = false;
+  examStartTime = null;
+  examSubmitted = false;
+  lastScore = 0; lastPct = 0; lastMissed = [];
+  saveSession();
+  finalizeLogin();
+}
+function finalizeLogin(){
+  document.getElementById('takerNameDisplay').textContent = takerName;
+  document.getElementById('loginOverlay').style.display = 'none';
+  document.body.classList.remove('pre-login');
+}
+function restoreAnswersToForm(){
+  answers.forEach((val,i)=>{
+    if(val===null || val===undefined) return;
+    const radio = document.querySelector(`input[name="q${i}"][value="${val}"]`);
+    if(radio) radio.checked = true;
+  });
+}
+function startTimer(){
+  document.getElementById('timerNote').textContent = '';
+  clearInterval(timerInterval);
+  tickTimer();
+  timerInterval = setInterval(tickTimer, 1000);
+}
+function tickTimer(){
+  const elapsed = Math.floor((Date.now()-examStartTime)/1000);
+  timeRemaining = Math.max(0, EXAM_SECONDS - elapsed);
+  updateTimerDisplay();
+  if(timeRemaining<=0){
+    clearInterval(timerInterval);
+    timeUp();
+  }
+}
+function updateTimerDisplay(){
+  const m = Math.floor(timeRemaining/60);
+  const s = timeRemaining%60;
+  document.getElementById('timeLeft').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const bar = document.getElementById('timerBar');
+  if(timeRemaining<=300) bar.classList.add('warn'); else bar.classList.remove('warn');
+}
+function timeUp(){
+  if(!examSubmitted){
+    alert("Time is up. One hour is the standard. Your exam is being auto-submitted as-is.");
+    showTab('exam');
+    gradeExam(true);
+  } else {
+    alert("Time is up. Exam was already submitted.");
+  }
+}
+function onAnswerChange(i, val){
+  answers[i] = parseInt(val,10);
+  saveSession();
+  updateProgress();
+}
+const questions = [
+  {
+    q:"Before starting execution on any task received from Juan or Cherry, what must you complete first?",
+    opts:["Just start working immediately","The full Task Intake Process","Ask a coworker for a shortcut","Guess the intent and move fast"],
+    a:1
+  },
+  {
+    q:"Step 1 of the Intake Process requires you to break the task down into how many parts?",
+    opts:["3","4","5","6"],
+    a:2
+  },
+  {
+    q:"Which of these is NOT one of the 5 breakdown items in Step 1?",
+    opts:["Objective","Expected Deliverable","Team headcount required","First action step"],
+    a:2
+  },
+  {
+    q:"Step 2 — Define the Finish Line — asks all of the following EXCEPT:",
+    opts:["What should a high-quality final output look like?","What would an executive expect to see?","What is my hourly rate for this task?","What risks should I be aware of?"],
+    a:2
+  },
+  {
+    q:"True or False: If you cannot visualize the finished product, you should stop.",
+    opts:["True","False"],
+    a:0
+  },
+  {
+    q:"The Execution Gate is non-negotiable. You must be able to clearly state which four things before executing?",
+    opts:["Budget, timeline, team, tools","Objective, deliverable, success criteria, and recommendation/intended outcome","Name, task, date, priority","Client, deadline, cost, risk"],
+    a:1
+  },
+  {
+    q:"Scenario 2, \"If the Task Is Unclear,\" includes which question?",
+    opts:["What is the real goal behind this?","What is my commission?","How long is lunch?","Who approved this?"],
+    a:0
+  },
+  {
+    q:"Scenario 4, \"If Reviewing a Document,\" asks all of the following EXCEPT:",
+    opts:["What are the key points?","What is missing?","What font was used?","What would you recommend?"],
+    a:2
+  },
+  {
+    q:"Scenario 5, \"If Analyzing a Situation,\" closes with which two questions?",
+    opts:["What is the budget? / Who is responsible?","What is the strongest recommendation? / What could go wrong?","What time is it? / Who called?","None of the above"],
+    a:1
+  },
+  {
+    q:"Scenario 6, \"If Building an Execution Plan,\" does NOT include which question?",
+    opts:["What is the clear objective?","What is the logical order of execution?","What is the measurable outcome?","What is the office dress code?"],
+    a:3
+  },
+  {
+    q:"Scenario 7, \"If Improving or Optimizing Something,\" includes which question?",
+    opts:["What would a top-performing company do differently?","What is everyone's favorite color?","How many meetings can we add?","None of the above"],
+    a:0
+  },
+  {
+    q:"Scenario 8, \"Before Escalating a Problem\" — what must happen first?",
+    opts:["Escalate immediately","Attempt structured thinking first","Wait a full week","Ignore the problem"],
+    a:1
+  },
+  {
+    q:"Per Scenario 8, how many possible solutions should you try before escalating?",
+    opts:["1","2","3","5"],
+    a:2
+  },
+  {
+    q:"Scenario 9, \"When Drafting Communication,\" checks for all of the following EXCEPT:",
+    opts:["Is the tone professional?","Is the message concise?","How many emojis are used?","Is this clear and structured?"],
+    a:2
+  },
+  {
+    q:"Scenario 10's mandatory final check before submitting to leadership is:",
+    opts:["\"If I were a strict COO/CEO reviewing this, what would I criticize?\"","\"Did I spell-check this?\"","\"Is this on time?\"","\"Did I cc everyone?\""],
+    a:0
+  },
+  {
+    q:"Scenario 11, \"When Short on Time,\" leads with which question?",
+    opts:["What is the minimum viable way to complete this properly?","Can I skip it entirely?","Who can do this for me instead?","None of the above"],
+    a:0
+  },
+  {
+    q:"Scenario 12, \"To Think at a Higher Level,\" includes which question?",
+    opts:["What would a top 1% performer do differently?","What is the minimum required?","What is the cheapest option?","None of the above"],
+    a:0
+  },
+  {
+    q:"Scenario 13 (\"condition category,\" \"heavy vs. light rehab,\" \"red flags\") is written for which team?",
+    opts:["Sales Team","Data Team (Property Review)","Operations Team","HR Team"],
+    a:1
+  },
+  {
+    q:"Scenario 14, \"Sales Team,\" opens with which question?",
+    opts:["What is the real objection behind this statement?","What is the property's zip code?","What is the rehab cost?","None of the above"],
+    a:0
+  },
+  {
+    q:"Scenario 15, \"Operations / Process Improvement,\" asks about all of the following EXCEPT:",
+    opts:["Where are inefficiencies?","What can be automated?","What is the bottleneck?","What is the CEO's PI-style profile?"],
+    a:3
+  },
+  {
+    q:"The Core Standard requires every team member to answer 4 questions before ANY task. Which is NOT one of them?",
+    opts:["What is the objective?","What is the deliverable?","What does success look like?","What is my job title?"],
+    a:3
+  },
+  {
+    q:"True or False: Per the Core Standard, if the four questions cannot be answered clearly, execution must stop.",
+    opts:["True","False"],
+    a:0
+  },
+  {
+    q:"Per the operating-style guidance for Juan Diaz, which communication approach works best?",
+    opts:["Long emotional explanations before the facts","Get to the point, bring facts/numbers/options, lead with a recommendation","Vague updates with open loops left hanging","Guarantee the outcome regardless of risk"],
+    a:1
+  },
+  {
+    q:"The recommended \"Best Update Format\" for briefing Juan is:",
+    opts:["Issue, Impact, Options, Recommendation, Decision Needed","Greeting, Weather, Small talk, Ask","Problem only, no options","None of the above"],
+    a:0
+  }
+];
+if(!answers.length) answers = new Array(questions.length).fill(null);
+const form = document.getElementById('examForm');
+questions.forEach((item,i)=>{
+  const div = document.createElement('div');
+  div.className='q';
+  div.id='q'+i;
+  let optsHtml='';
+  item.opts.forEach((opt,j)=>{
+    optsHtml += `<label class="opt" data-qi="${i}" data-oi="${j}">
+      <input type="radio" name="q${i}" value="${j}" onchange="onAnswerChange(${i}, this.value)"> ${opt}
+    </label>`;
+  });
+  div.innerHTML = `<p class="qtext"><span class="qnum">Q${i+1}.</span>${item.q}</p>${optsHtml}`;
+  form.appendChild(div);
+});
+function updateProgress(){
+  let answered=0;
+  questions.forEach((item,i)=>{
+    if(document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+  });
+  const pct = Math.round((answered/questions.length)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = `${answered} / ${questions.length} answered`;
+}
+function gradeExam(forced){
+  if(examSubmitted) return;
+  if(!forced){
+    let unanswered=0;
+    questions.forEach((item,i)=>{ if(!document.querySelector(`input[name="q${i}"]:checked`)) unanswered++; });
+    if(unanswered>0){
+      alert(`You have ${unanswered} unanswered question(s). Answer everything — a strict COO would not accept an incomplete review.`);
+      return;
+    }
+  }
+  examSubmitted = true;
+  clearInterval(timerInterval);
+  let score=0;
+  let missed=[];
+  questions.forEach((item,i)=>{
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+    const chosen = checked ? parseInt(checked.value,10) : -1;
+    const qDiv = document.getElementById('q'+i);
+    const opts = qDiv.querySelectorAll('.opt');
+    opts.forEach((optEl,j)=>{
+      if(j===item.a) optEl.classList.add('answer-correct');
+      else if(j===chosen && chosen!==item.a) optEl.classList.add('answer-wrong');
+    });
+    if(chosen===item.a){ score++; qDiv.classList.add('correct'); }
+    else { qDiv.classList.add('incorrect'); missed.push(i+1); }
+  });
+  document.querySelectorAll('#examForm input').forEach(inp=>inp.disabled=true);
+  const pct = Math.round((score/questions.length)*100);
+  lastScore = score; lastPct = pct; lastMissed = missed;
+  saveSession();
+  document.getElementById('timerNote').textContent = '(submitted)';
+  renderResultBox(forced, true);
+}
+function renderResultBox(forced, autoSend){
+  const score = lastScore, pct = lastPct;
+  const box = document.getElementById('resultBox');
+  const title = document.getElementById('resultTitle');
+  const scoreLine = document.getElementById('scoreLine');
+  const msg = document.getElementById('resultMsg');
+  scoreLine.textContent = `${score} / ${questions.length}  (${pct}%)`;
+  let forcedNote = forced ? " (auto-submitted — time expired)" : "";
+  if(pct>=90){
+    box.className='pass';
+    title.innerHTML='<h2>CLEARED — 90%+'+forcedNote+'</h2>';
+    msg.textContent = "This is how we operate. You run tasks with clarity, not guesswork. Go execute.";
+  } else if(pct>=80){
+    box.className='pass';
+    title.innerHTML='<h2>CLEARED — PASSED'+forcedNote+'</h2>';
+    msg.textContent = "You hit the 80% bar. Cleared to execute. Review the missed questions below so this doesn't slow you down later.";
+  } else if(pct>=70){
+    box.className='fail';
+    title.innerHTML='<h2>NOT CLEARED'+forcedNote+'</h2>';
+    msg.textContent = "Close, but close doesn't count. Standard is 80%. Go back through the Reviewer tab on the sections you missed, then retake.";
+  } else {
+    box.className='fail';
+    title.innerHTML='<h2>STOP — NOT CLEARED'+forcedNote+'</h2>';
+    msg.textContent = "You do not touch a live task on this system yet. Re-read the Reviewer tab in full, then retake the exam before running anything real.";
+  }
+  box.style.display='block';
+  box.scrollIntoView({behavior:'smooth'});
+  document.getElementById('submitBtn').style.display='none';
+  document.getElementById('retryBtn').style.display='block';
+  if(autoSend) sendReport(true);
+}
+function restoreSubmittedUI(){
+  examSubmitted = true;
+  clearInterval(timerInterval);
+  questions.forEach((item,i)=>{
+    const chosen = answers[i];
+    const qDiv = document.getElementById('q'+i);
+    const opts = qDiv.querySelectorAll('.opt');
+    opts.forEach((optEl,j)=>{
+      if(j===item.a) optEl.classList.add('answer-correct');
+      else if(chosen!==null && chosen!==undefined && j===chosen && chosen!==item.a) optEl.classList.add('answer-wrong');
+    });
+    if(chosen===item.a) qDiv.classList.add('correct'); else qDiv.classList.add('incorrect');
+  });
+  document.querySelectorAll('#examForm input').forEach(inp=>inp.disabled=true);
+  document.getElementById('timeLeft').textContent = '00:00';
+  document.getElementById('timerNote').textContent = '(submitted previously — this is a review of your last attempt)';
+  updateProgress();
+  renderResultBox(false, false);
+}
+function sendReport(auto){
+  const timeTakenSec = EXAM_SECONDS - timeRemaining;
+  const tm = Math.floor(timeTakenSec/60), ts = timeTakenSec%60;
+  const timeTakenStr = `${tm}m ${ts}s`;
+  const resultWord = lastPct>=80 ? "CLEARED" : "NOT CLEARED";
+  const subject = `Certification Exam Report - ${takerName} - ${lastPct}% (${resultWord})`;
+  const body =
+`CERTIFICATION EXAM REPORT
+Exam: Unified AI Prompt System (Master AI Prompt Question Bank + Strict Task Intake Process)
+Name: ${takerName}
+Score: ${lastScore} / ${questions.length} (${lastPct}%)
+Result: ${resultWord} (80% required to pass)
+Time Taken: ${timeTakenStr} of 60:00 allowed
+Date/Time: ${new Date().toLocaleString()}
+Missed Questions: ${lastMissed.length ? lastMissed.join(', ') : 'None'}
+`;
+  const mailtoUrl = `mailto:${REPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const status = document.getElementById('reportStatus');
+  window.location.href = mailtoUrl;
+  if(status){
+    status.textContent = auto
+      ? `Report auto-drafted to ${REPORT_EMAIL} in your email app. If it didn't open, click the button above.`
+      : `Report re-sent to ${REPORT_EMAIL} in your email app.`;
+  }
+}
+function resetExam(){
+  document.getElementById('examForm').reset();
+  document.querySelectorAll('#examForm input').forEach(inp=>inp.disabled=false);
+  document.querySelectorAll('.q').forEach(q=>q.classList.remove('correct','incorrect'));
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('answer-correct','answer-wrong'));
+  document.getElementById('resultBox').style.display='none';
+  document.getElementById('reportStatus').textContent='';
+  document.getElementById('submitBtn').style.display='block';
+  document.getElementById('retryBtn').style.display='none';
+  // A retake is a brand-new attempt: wipe answers/result, start the clock now.
+  examSubmitted = false;
+  answers = new Array(questions.length).fill(null);
+  lastScore = 0; lastPct = 0; lastMissed = [];
+  examStarted = true;
+  examStartTime = Date.now();
+  timeRemaining = EXAM_SECONDS;
+  saveSession();
+  updateTimerDisplay();
+  clearInterval(timerInterval);
+  startTimer();
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showTab(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('active'));
+  const idx = name==='reviewer' ? 0 : 1;
+  document.querySelectorAll('.tabbtn')[idx].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  // The 1-hour clock begins the first time the exam is actually opened — not at login.
+  if(name==='exam' && !examStarted && !examSubmitted && takerName){
+    examStarted = true;
+    examStartTime = Date.now();
+    timeRemaining = EXAM_SECONDS;
+    saveSession();
+    startTimer();
+  }
+}
+showSessionNotice();
+updateProgress();
+</script>
+</body>
+</html>
