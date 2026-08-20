@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI as Your Second Brain — Reviewer & Certification Exam (50 Items)</title>
+<style>
+  :root{
+    --ink:#1c2733;
+    --paper:#f6f4ee;
+    --card:#ffffff;
+    --line:#d8d3c6;
+    --hi:#ffd23f;
+    --hi-dark:#c79a00;
+    --green:#2e7d54;
+    --red:#c0392b;
+    --slate:#5c6b7a;
+    --chatgpt:#0fa47f;
+    --claude:#c96442;
+    --grok:#33404d;
+    --deepseek:#3457d5;
+    --kimi:#7a3fd1;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none!important;animation:none!important;} }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;
+    line-height:1.6;
+    font-size:17px;
+  }
+  /* ---------- Header ---------- */
+  header{
+    background:var(--ink);
+    color:var(--paper);
+    padding:44px 20px 36px;
+    border-bottom:6px solid var(--hi);
+  }
+  .wrap{max-width:880px;margin:0 auto;}
+  .eyebrow{
+    font-family:'Trebuchet MS','Segoe UI',Arial,sans-serif;
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--hi);margin-bottom:12px;
+  }
+  header h1{
+    font-size:clamp(28px,5vw,44px);
+    line-height:1.12;font-weight:700;
+    max-width:640px;
+  }
+  header p.sub{
+    margin-top:14px;color:#b9c2cc;max-width:620px;
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:15px;
+  }
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    position:sticky;top:0;z-index:50;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  nav.tabs .wrap{display:flex;gap:4px;}
+  nav.tabs button{
+    flex:1;
+    font-family:'Trebuchet MS',Arial,sans-serif;
+    font-size:14px;letter-spacing:.06em;text-transform:uppercase;
+    padding:16px 8px 13px;
+    background:none;border:none;border-bottom:3px solid transparent;
+    color:var(--slate);cursor:pointer;font-weight:700;
+  }
+  nav.tabs button.active{color:var(--ink);border-bottom-color:var(--hi-dark);}
+  nav.tabs button:focus-visible{outline:2px solid var(--hi-dark);outline-offset:-2px;}
+  nav.tabs button.locked{opacity:.55;}
+  /* ---------- Review progress bar ---------- */
+  .progress-strip{
+    background:var(--ink);color:var(--paper);
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:13px;
+    padding:8px 20px;
+  }
+  .progress-strip .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .pbar{
+    flex:1;min-width:140px;height:8px;background:#3a4a5c;border-radius:99px;overflow:hidden;
+  }
+  .pbar > div{height:100%;width:0%;background:var(--hi);transition:width .3s;}
+  #pLabel{white-space:nowrap;font-weight:700;}
+  main{padding:40px 20px 90px;}
+  section.panel{display:none;}
+  section.panel.show{display:block;}
+  h2{
+    font-size:26px;margin:44px 0 6px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:6px;
+  }
+  h2:first-of-type{margin-top:0;}
+  h2 .num{
+    display:inline-block;background:var(--hi);
+    font-family:'Trebuchet MS',Arial,sans-serif;
+    font-size:14px;font-weight:700;
+    padding:2px 9px;margin-right:10px;
+    transform:translateY(-3px);
+  }
+  h3{font-size:19px;margin:26px 0 8px;}
+  p{margin:10px 0;}
+  ul,ol{margin:10px 0 10px 26px;}
+  li{margin:6px 0;}
+  .note{
+    background:#fff8dd;border-left:4px solid var(--hi-dark);
+    padding:12px 16px;margin:18px 0;
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:15px;
+  }
+  .warn{
+    background:#fdecea;border-left:4px solid var(--red);
+    padding:12px 16px;margin:18px 0;
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:15px;
+  }
+  mark{background:var(--hi);padding:0 3px;}
+  /* ---------- Section review buttons ---------- */
+  .review-check{
+    margin:22px 0 8px;
+  }
+  .review-check button{
+    font-family:'Trebuchet MS',Arial,sans-serif;
+    font-size:14px;font-weight:700;
+    background:none;border:2px solid var(--ink);border-radius:8px;
+    color:var(--ink);padding:10px 20px;cursor:pointer;
+  }
+  .review-check button:hover{background:var(--hi);}
+  .review-check button:focus-visible{outline:3px solid var(--hi-dark);outline-offset:2px;}
+  .review-check button.done{
+    background:var(--green);border-color:var(--green);color:#fff;cursor:default;
+  }
+  /* ---------- Tool cards ---------- */
+  .tool-grid{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0;}
+  @media(min-width:700px){.tool-grid{grid-template-columns:1fr 1fr;}}
+  .tool{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px;border-top:5px solid var(--slate);
+  }
+  .tool h3{margin-top:0;font-family:'Trebuchet MS',Arial,sans-serif;}
+  .tool .tag{
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--slate);
+  }
+  .tool ul{font-size:15.5px;font-family:'Trebuchet MS',Arial,sans-serif;}
+  .tool.t-chatgpt{border-top-color:var(--chatgpt);}
+  .tool.t-claude{border-top-color:var(--claude);}
+  .tool.t-grok{border-top-color:var(--grok);}
+  .tool.t-deepseek{border-top-color:var(--deepseek);}
+  .tool.t-kimi{border-top-color:var(--kimi);}
+  table{
+    width:100%;border-collapse:collapse;margin:18px 0;
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:14.5px;
+    background:var(--card);
+  }
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top;}
+  th{background:var(--ink);color:var(--paper);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;}
+  tr:nth-child(even) td{background:#faf9f4;}
+  /* ---------- Locked exam screen ---------- */
+  #examLocked{
+    text-align:center;padding:70px 20px;
+    font-family:'Trebuchet MS',Arial,sans-serif;
+  }
+  #examLocked .padlock{font-size:56px;}
+  #examLocked h2{border:none;font-size:24px;margin-top:16px;}
+  #examLocked p{color:var(--slate);max-width:460px;margin:12px auto;}
+  #examLocked ul.remaining{
+    list-style:none;margin:18px auto 0;max-width:420px;text-align:left;
+    font-size:15px;
+  }
+  #examLocked ul.remaining li{padding:6px 10px;border-bottom:1px dashed var(--line);}
+  #examLocked ul.remaining li.ok{color:var(--green);}
+  #examLocked ul.remaining li.pending{color:var(--red);}
+  /* ---------- Exam ---------- */
+  .exam-intro{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 22px;margin-bottom:28px;
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:15px;
+  }
+  .name-row{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .name-row label{font-weight:700;}
+  .name-row input{
+    flex:1;min-width:220px;
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:15px;
+    padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+  }
+  .name-row input:focus-visible{outline:2px solid var(--hi-dark);}
+  .q{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px;margin:16px 0;
+  }
+  .q .qnum{
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:12px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--slate);
+    margin-bottom:6px;
+  }
+  .q .qtext{font-weight:700;margin-bottom:12px;}
+  .q label{
+    display:flex;gap:10px;align-items:flex-start;
+    padding:9px 12px;margin:6px 0;border:1px solid var(--line);
+    border-radius:8px;cursor:pointer;
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:15px;
+    background:#fbfaf6;
+  }
+  .q label:hover{border-color:var(--hi-dark);}
+  .q input[type=radio]{margin-top:4px;accent-color:var(--ink);}
+  .q label:has(input:focus-visible){outline:2px solid var(--hi-dark);}
+  .q.graded label{cursor:default;}
+  .q.graded label.correct{border-color:var(--green);background:#eef7f1;}
+  .q.graded label.wrong{border-color:var(--red);background:#fdf0ee;}
+  .expl{
+    display:none;margin-top:12px;padding:11px 14px;
+    background:#f0f3f7;border-left:4px solid var(--slate);
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:14px;
+  }
+  .q.graded .expl{display:block;}
+  .verdict{
+    display:none;font-family:'Trebuchet MS',Arial,sans-serif;
+    font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    margin-top:10px;
+  }
+  .q.graded .verdict{display:block;}
+  .verdict.ok{color:var(--green);}
+  .verdict.no{color:var(--red);}
+  .submit-bar{margin:34px 0 10px;text-align:center;}
+  button.big{
+    font-family:'Trebuchet MS',Arial,sans-serif;
+    font-size:16px;font-weight:700;letter-spacing:.04em;
+    background:var(--ink);color:var(--paper);
+    border:none;border-radius:8px;padding:15px 40px;cursor:pointer;
+  }
+  button.big:hover{background:#2c3d50;}
+  button.big:focus-visible{outline:3px solid var(--hi-dark);outline-offset:2px;}
+  button.big.ghost{background:none;color:var(--ink);border:2px solid var(--ink);margin-left:10px;}
+  button.big:disabled{background:#9aa5af;cursor:not-allowed;}
+  /* ---------- Result card ---------- */
+  #scorecard{
+    display:none;margin:26px 0;padding:30px 26px;
+    border-radius:var(--radius);text-align:center;
+    font-family:'Trebuchet MS',Arial,sans-serif;
+  }
+  #scorecard.pass{display:block;background:#eef7f1;border:3px solid var(--green);}
+  #scorecard.fail{display:block;background:#fdf0ee;border:3px solid var(--red);}
+  #scorecard .cert-label{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--slate);}
+  #scorecard .who{font-size:22px;font-weight:800;margin:8px 0 2px;}
+  #scorecard .when{font-size:13px;color:var(--slate);margin-bottom:14px;}
+  #scorecard .big-score{font-size:52px;font-weight:800;line-height:1;}
+  #scorecard .status{font-size:14px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-top:10px;}
+  #scorecard.pass .status{color:var(--green);}
+  #scorecard.fail .status{color:var(--red);}
+  #scorecard p{font-size:15px;margin-top:12px;}
+  #scorecard .breakdown{
+    display:inline-block;margin-top:14px;font-size:14px;
+    background:rgba(255,255,255,.7);border:1px solid var(--line);
+    border-radius:8px;padding:8px 18px;
+  }
+  #unanswered{
+    display:none;margin:18px 0;padding:12px 16px;
+    background:#fff8dd;border-left:4px solid var(--hi-dark);
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:15px;
+  }
+  footer{
+    border-top:1px solid var(--line);padding:26px 20px 40px;
+    font-family:'Trebuchet MS',Arial,sans-serif;font-size:13px;color:var(--slate);
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Team Training Module · Marketing Ops</div>
+    <h1>AI as Your Second Brain</h1>
+    <p class="sub">How to use ChatGPT, Claude, Grok, DeepSeek, and Kimi as thinking partners for real work. Complete all 7 reviewer sections to unlock the 50-item certification exam. Passing score: 80% (40/50).</p>
+  </div>
+</header>
+<nav class="tabs">
+  <div class="wrap">
+    <button id="tabReviewer" class="active" onclick="showTab('reviewer')">📖 Reviewer</button>
+    <button id="tabExam" class="locked" onclick="showTab('exam')">🔒 Exam (Locked)</button>
+  </div>
+</nav>
+<div class="progress-strip">
+  <div class="wrap">
+    <span id="pLabel">Review progress: 0 / 7 sections</span>
+    <div class="pbar"><div id="pFill"></div></div>
+  </div>
+</div>
+<main class="wrap">
+<!-- ============================================================ REVIEWER -->
+<section id="reviewer" class="panel show">
+  <div class="note"><strong>How this works:</strong> Read each section, then press <strong>"Mark section as reviewed"</strong> at the end of it. The exam stays locked until all 7 sections are marked. Don't rush — the exam has 50 questions and pulls from every section.</div>
+  <h2><span class="num">01</span>The Core Idea: AI Is a Brain, Not a Vending Machine</h2>
+  <p>The biggest mistake beginners make is treating AI like Google — type a few words, take the first answer, done. That's using a brain like a vending machine.</p>
+  <p>Used correctly, an AI assistant is a <mark>thinking partner</mark>: something you brainstorm with, delegate drafts to, argue with, and use to check your own work. These tools are all <strong>LLMs (large language models)</strong> — systems trained on huge amounts of text that predict language. They are prediction machines, not databases, which is why the quality of what you get out depends almost entirely on the quality of what you put in.</p>
+  <ul>
+    <li><strong>Vending machine user:</strong> "write facebook ad" → gets a generic ad → complains AI is useless.</li>
+    <li><strong>Second-brain user:</strong> gives the AI the audience, the offer, the tone, two examples of past winning ads, and asks for 5 variations with different hooks → gets usable drafts in 2 minutes.</li>
+  </ul>
+  <div class="note"><strong>Golden rule:</strong> An AI can only work with what you give it. Context in = quality out.</div>
+  <div class="review-check"><button data-sec="0" onclick="markReviewed(this)">☐ Mark Section 1 as reviewed</button></div>
+  <h2><span class="num">02</span>Meet the Five Brains</h2>
+  <p>All five tools are LLM chat assistants. They overlap ~80% in ability — all can write, summarize, brainstorm, code, and analyze. The differences are in their <em>strengths, personality, cost, and data access</em>. A pro keeps 2–3 of them open and routes tasks to the right one.</p>
+  <div class="tool-grid">
+    <div class="tool t-chatgpt">
+      <div class="tag">Made by OpenAI</div>
+      <h3>ChatGPT</h3>
+      <ul>
+        <li><strong>Best at:</strong> all-around generalist work; the "Swiss Army knife."</li>
+        <li>Huge ecosystem: image generation, voice mode, custom GPTs, data analysis.</li>
+        <li>Great default when you're not sure which tool fits.</li>
+        <li>Watch out: can be confidently wrong; verify facts and numbers.</li>
+      </ul>
+    </div>
+    <div class="tool t-claude">
+      <div class="tag">Made by Anthropic</div>
+      <h3>Claude</h3>
+      <ul>
+        <li><strong>Best at:</strong> long documents, careful reasoning, natural writing, and coding.</li>
+        <li>Very large context window — paste entire reports, contracts, or CSV exports.</li>
+        <li>Artifacts: builds working HTML pages, dashboards, and tools inside the chat.</li>
+        <li>Tends to follow nuanced instructions closely; strong for client-facing copy.</li>
+      </ul>
+    </div>
+    <div class="tool t-grok">
+      <div class="tag">Made by xAI</div>
+      <h3>Grok</h3>
+      <ul>
+        <li><strong>Best at:</strong> real-time information — it's plugged into X (Twitter).</li>
+        <li>Use for breaking news, trending topics, and what people are saying right now.</li>
+        <li>More casual, unfiltered tone.</li>
+        <li>Watch out: social media data includes rumors — verify before you act on it.</li>
+      </ul>
+    </div>
+    <div class="tool t-deepseek">
+      <div class="tag">DeepSeek · Open-source</div>
+      <h3>DeepSeek</h3>
+      <ul>
+        <li><strong>Best at:</strong> logic, math, and coding at very low cost (largely free).</li>
+        <li>Its reasoning models "think out loud" — you can watch the step-by-step logic.</li>
+        <li>Great budget option for heavy analytical work.</li>
+        <li>Watch out: China-based servers — <strong>never</strong> paste sensitive company or client data.</li>
+      </ul>
+    </div>
+    <div class="tool t-kimi">
+      <div class="tag">Made by Moonshot AI</div>
+      <h3>Kimi</h3>
+      <ul>
+        <li><strong>Best at:</strong> very long documents and multi-file analysis with a massive context window.</li>
+        <li>Strong at reading and cross-referencing many uploaded files at once.</li>
+        <li>Free tier is generous — good for research-heavy tasks.</li>
+        <li>Watch out: same data-privacy caution as DeepSeek (China-based servers).</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Quick routing table</h3>
+  <table>
+    <tr><th>Task</th><th>First choice</th><th>Why</th></tr>
+    <tr><td>Draft ad copy, emails, SOPs, client-facing text</td><td>Claude or ChatGPT</td><td>Best writing quality and instruction-following</td></tr>
+    <tr><td>Analyze a 50-page report or huge CSV</td><td>Claude or Kimi</td><td>Large context windows handle big files</td></tr>
+    <tr><td>What's trending / breaking news right now</td><td>Grok</td><td>Live X (Twitter) data access</td></tr>
+    <tr><td>Math, logic, code debugging on a budget</td><td>DeepSeek</td><td>Strong reasoning, free/cheap</td></tr>
+    <tr><td>Generate an image or use voice mode</td><td>ChatGPT</td><td>Built-in multimodal tools</td></tr>
+    <tr><td>Build a working HTML tool/dashboard in-chat</td><td>Claude</td><td>Artifacts feature</td></tr>
+    <tr><td>Anything involving client PII or company financials</td><td>Company-approved tool only</td><td>Data privacy policy — see Section 5</td></tr>
+  </table>
+  <div class="review-check"><button data-sec="1" onclick="markReviewed(this)">☐ Mark Section 2 as reviewed</button></div>
+  <h2><span class="num">03</span>Prompting: The C.R.A.F.T. Method</h2>
+  <p>Every good prompt has up to five ingredients. You don't need all five every time, but the more of them you include, the better the output. Remember <mark>C.R.A.F.T.</mark>:</p>
+  <table>
+    <tr><th>Letter</th><th>Ingredient</th><th>Example</th></tr>
+    <tr><td><strong>C</strong></td><td><strong>Context</strong> — background the AI needs</td><td>"We buy houses for cash in the Bay Area. Our audience is homeowners facing foreclosure."</td></tr>
+    <tr><td><strong>R</strong></td><td><strong>Role</strong> — who the AI should act as</td><td>"Act as a direct-response copywriter with 15 years of experience."</td></tr>
+    <tr><td><strong>A</strong></td><td><strong>Action</strong> — the specific task</td><td>"Write 5 Facebook ad headlines."</td></tr>
+    <tr><td><strong>F</strong></td><td><strong>Format</strong> — how the output should look</td><td>"Give them as a numbered list, each under 10 words, with a 1-line rationale."</td></tr>
+    <tr><td><strong>T</strong></td><td><strong>Tone / examples</strong> — style guidance or samples</td><td>"Empathetic, not salesy. Here are 2 past headlines that performed well: …"</td></tr>
+  </table>
+  <h3>Iterate — don't accept draft one</h3>
+  <p>The first output is a starting point. Reply with corrections just like you would with a junior teammate:</p>
+  <ul>
+    <li>"Make #3 shorter and remove the exclamation points."</li>
+    <li>"That's too formal. Rewrite like you're texting a friend."</li>
+    <li>"Good structure — now do the same for the plumbing brand."</li>
+  </ul>
+  <div class="note"><strong>Pro move — ask the AI to interview you:</strong> "Before you write anything, ask me 5 questions that would make this better." This forces out context you forgot to give.</div>
+  <div class="review-check"><button data-sec="2" onclick="markReviewed(this)">☐ Mark Section 3 as reviewed</button></div>
+  <h2><span class="num">04</span>Hallucinations: When the Brain Makes Things Up</h2>
+  <p>All LLMs sometimes <mark>hallucinate</mark> — they state false information fluently and confidently. They can invent statistics, fake URLs, nonexistent laws, and imaginary case studies. Confidence of tone means nothing: hallucinations sound just as sure as facts.</p>
+  <p>Two related concepts you must know:</p>
+  <ul>
+    <li><strong>Context window:</strong> how much text the model can consider at once. Bigger window = can handle longer documents and conversations.</li>
+    <li><strong>Training cutoff:</strong> models are trained on data up to a certain date. They don't know what happened after it unless they have live web search.</li>
+  </ul>
+  <p><strong>Highest-risk outputs — always verify before using:</strong></p>
+  <ul>
+    <li>Specific numbers, statistics, and prices</li>
+    <li>Legal, tax, and compliance claims</li>
+    <li>Quotes, citations, and links</li>
+    <li>Anything that happened recently</li>
+  </ul>
+  <p><strong>Verification tactics:</strong></p>
+  <ol>
+    <li><strong>Cross-examine:</strong> ask "How confident are you? What could be wrong here?"</li>
+    <li><strong>Second opinion:</strong> paste the answer into a different AI and ask it to fact-check.</li>
+    <li><strong>Source check:</strong> use a tool with web search, or Google the claim yourself. Click every link the AI cites — fake citations are common.</li>
+    <li><strong>Human check:</strong> anything going to a client or to Juan gets human eyes first. Always.</li>
+  </ol>
+  <div class="warn"><strong>Never</strong> publish AI-generated facts, stats, or legal claims without verifying them. "The AI said so" is not a defense.</div>
+  <div class="review-check"><button data-sec="3" onclick="markReviewed(this)">☐ Mark Section 4 as reviewed</button></div>
+  <h2><span class="num">05</span>Data Privacy: What Never Goes Into a Chatbot</h2>
+  <p>Assume anything you paste into a public AI tool could be stored on the provider's servers and possibly used for training. <mark>Treat prompts like postcards, not sealed letters.</mark></p>
+  <p><strong>Never paste into any AI tool:</strong></p>
+  <ul>
+    <li>Client names combined with financial or property distress details (PII)</li>
+    <li>Passwords, API keys, or login credentials — even when debugging</li>
+    <li>Unreleased company financials or contracts with identifying details</li>
+  </ul>
+  <p><strong>Safe practice — anonymize first:</strong> "A homeowner in San Mateo behind on payments" instead of a real name and address. Replace real numbers with rounded placeholders when the exact figure isn't needed for the task.</p>
+  <p>Be extra strict with tools hosted outside the US (DeepSeek, Kimi) — use them for generic reasoning and public information, not company data.</p>
+  <div class="review-check"><button data-sec="4" onclick="markReviewed(this)">☐ Mark Section 5 as reviewed</button></div>
+  <h2><span class="num">06</span>Workflows: Making the Brains Work Together</h2>
+  <h3>The Draft → Critique → Polish chain</h3>
+  <ol>
+    <li><strong>Draft</strong> in Tool A ("Write a first draft of…").</li>
+    <li><strong>Critique</strong> in Tool B ("Act as a harsh editor. Find weaknesses in this draft: …").</li>
+    <li><strong>Polish</strong> back in Tool A (or yourself) using the critique.</li>
+  </ol>
+  <p>Different models have different blind spots — using one to review another catches errors a single model misses.</p>
+  <h3>The Summarize → Decide pattern</h3>
+  <p>Long report or messy data? Paste it into a long-context tool (Claude/Kimi) and ask: "Summarize in 10 bullets, then list the 3 decisions this data suggests, with the strongest evidence for each."</p>
+  <h3>The Brainstorm → Filter pattern</h3>
+  <p>Ask for volume first ("Give me 20 ideas, don't filter"), then ask the AI to rank its own list against your criteria ("Now score each 1–10 on cost and speed to implement, and defend the top 3").</p>
+  <div class="review-check"><button data-sec="5" onclick="markReviewed(this)">☐ Mark Section 6 as reviewed</button></div>
+  <h2><span class="num">07</span>When NOT to Use AI</h2>
+  <ul>
+    <li><strong>Final authority decisions</strong> — pricing, hiring, legal commitments. AI informs; humans decide.</li>
+    <li><strong>As your only fact source</strong> for anything high-stakes.</li>
+    <li><strong>Sensitive communications</strong> — apologies, conflict, bad news. People can tell.</li>
+    <li><strong>When you haven't read the output.</strong> Sending unread AI output under your name is the fastest way to lose trust.</li>
+  </ul>
+  <div class="note"><strong>Accountability rule:</strong> If your name is on it, you own every word — no matter which brain drafted it.</div>
+  <div class="review-check"><button data-sec="6" onclick="markReviewed(this)">☐ Mark Section 7 as reviewed</button></div>
+  <div class="submit-bar">
+    <button class="big" id="goExamBtn" disabled onclick="showTab('exam')">🔒 Finish all 7 sections to unlock the exam</button>
+  </div>
+</section>
+<!-- ============================================================ EXAM -->
+<section id="exam" class="panel">
+  <div id="examLocked">
+    <div class="padlock">🔒</div>
+    <h2>The exam is locked</h2>
+    <p>You must read and mark all 7 reviewer sections as reviewed before you can start. This exam has 50 questions and pulls from every section — skipping the reviewer means failing the exam.</p>
+    <ul class="remaining" id="lockList"></ul>
+    <div class="submit-bar">
+      <button class="big" onclick="showTab('reviewer')">← Back to the Reviewer</button>
+    </div>
+  </div>
+  <div id="examBody" style="display:none">
+    <div class="exam-intro">
+      <strong>Certification Exam — 50 questions.</strong> Multiple choice, one answer each. Passing score is <strong>40/50 (80%)</strong>. Answer honestly and without the reviewer open — this checks what you actually retained. Explanations appear after you submit. Your result card appears at the end; screenshot it and send it to your team lead.
+      <div class="name-row">
+        <label for="examName">Your full name:</label>
+        <input type="text" id="examName" placeholder="e.g. Juan Dela Cruz" autocomplete="name">
+      </div>
+    </div>
+    <div id="questions"></div>
+    <div id="unanswered"></div>
+    <div id="scorecard">
+      <div class="cert-label">Official Result · AI as Your Second Brain</div>
+      <div class="who" id="scoreName"></div>
+      <div class="when" id="scoreDate"></div>
+      <div class="big-score" id="scoreNum"></div>
+      <div class="status" id="scoreStatus"></div>
+      <div class="breakdown" id="scoreBreak"></div>
+      <p id="scoreMsg"></p>
+    </div>
+    <div class="submit-bar">
+      <button class="big" id="submitBtn" onclick="grade()">Submit Answers</button>
+      <button class="big ghost" id="retakeBtn" style="display:none" onclick="retake()">Retake Exam</button>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    Internal training material · AI as Your Second Brain · Marketing Operations. Tool capabilities change fast — treat specifics as of the training date and re-verify before big decisions.
+  </div>
+</footer>
+<script>
+/* ==================== 50-QUESTION BANK ==================== */
+const QUESTIONS = [
+ {q:"What is the single biggest factor that determines the quality of an AI's output?",
+  opts:["Which AI tool you choose","The amount and quality of context you provide","Whether you use the paid or free version","Typing in all caps so it pays attention"],a:1,
+  ex:"All five tools are capable. The difference between generic and great output is almost always the context, examples, and instructions you supply. Context in = quality out."},
+ {q:"A teammate types 'write facebook ad' with no other details and gets a generic result. What should they do?",
+  opts:["Switch to a different AI tool immediately","Conclude AI isn't useful for ads","Add context: audience, offer, tone, and examples of past winning ads","Type the same prompt again and hope for better luck"],a:2,
+  ex:"That's vending-machine usage. The fix isn't a different tool — it's a better prompt with real context (C.R.A.F.T.)."},
+ {q:"What does 'LLM' stand for?",
+  opts:["Large Language Model","Logical Learning Machine","Linked Language Memory","Large Learning Method"],a:0,
+  ex:"All five tools are LLMs — large language models trained on huge amounts of text that predict language."},
+ {q:"Why is 'prediction machine, not a database' an accurate description of these AI tools?",
+  opts:["They predict likely text rather than looking up verified facts, so they can be wrong","They can only predict the future","They refuse to store any information","They only work with numbers, not words"],a:0,
+  ex:"LLMs generate the most likely next words. That makes them fluent — and capable of confidently generating false information."},
+ {q:"Which behavior marks a 'second-brain user' rather than a 'vending machine user'?",
+  opts:["Accepting the first answer to save time","Providing audience, offer, tone, and examples, then iterating on the drafts","Using only one AI tool forever","Asking the shortest possible questions"],a:1,
+  ex:"Second-brain users treat AI like a junior teammate: brief it well, review its work, and iterate."},
+ {q:"Which tool is the best FIRST choice for finding out what's trending on social media right now?",
+  opts:["DeepSeek","Kimi","Claude","Grok"],a:3,
+  ex:"Grok is plugged into X (Twitter), giving it real-time social data. The others rely mainly on training data or general web search."},
+ {q:"You need to analyze a 60-page PDF and cross-reference it with three other documents. Which tools fit best?",
+  opts:["Claude or Kimi, because of their large context windows","Grok, because it's the fastest","Any tool — they're all identical for this","DeepSeek, because it's free"],a:0,
+  ex:"Long, multi-document analysis is exactly what large context windows are for. Claude and Kimi are the long-document specialists in our lineup."},
+ {q:"Which company makes Claude?",
+  opts:["OpenAI","Anthropic","xAI","Moonshot AI"],a:1,
+  ex:"Claude is made by Anthropic. ChatGPT = OpenAI, Grok = xAI, Kimi = Moonshot AI, DeepSeek = DeepSeek."},
+ {q:"Which company makes ChatGPT?",
+  opts:["Anthropic","Moonshot AI","OpenAI","xAI"],a:2,
+  ex:"ChatGPT is made by OpenAI — the all-around generalist with image generation, voice mode, and custom GPTs."},
+ {q:"Which company makes Grok?",
+  opts:["xAI","OpenAI","DeepSeek","Anthropic"],a:0,
+  ex:"Grok is made by xAI and is connected to X (Twitter) for real-time information."},
+ {q:"Which company makes Kimi?",
+  opts:["OpenAI","Moonshot AI","xAI","Anthropic"],a:1,
+  ex:"Kimi is made by Moonshot AI — known for its massive context window and multi-file document analysis."},
+ {q:"Which tool is described as the budget-friendly specialist for math, logic, and code, with visible step-by-step reasoning?",
+  opts:["ChatGPT","Grok","DeepSeek","Kimi"],a:2,
+  ex:"DeepSeek's reasoning models 'think out loud' and are largely free — great for heavy analytical work on a budget."},
+ {q:"You need a quick working HTML dashboard prototype built directly inside the chat. Which feature fits best?",
+  opts:["Grok's live X data","Claude's Artifacts","DeepSeek's free tier","ChatGPT's voice mode"],a:1,
+  ex:"Claude's Artifacts feature builds working HTML pages, tools, and dashboards inside the conversation."},
+ {q:"You need to generate an image for a flyer concept. Which tool in our lineup has that built in?",
+  opts:["ChatGPT","DeepSeek","Kimi","Claude"],a:0,
+  ex:"ChatGPT's ecosystem includes built-in image generation and voice mode — the multimodal Swiss Army knife."},
+ {q:"Which statement best describes the overall relationship between the five tools?",
+  opts:["Only one of them is worth using; the rest are copies","They overlap heavily in ability, and a pro routes each task to the tool whose strengths fit","Each tool can only do one thing","You must pay for all five to do professional work"],a:1,
+  ex:"They're ~80% overlapping generalists with different strengths, costs, and data access. The skill is routing: right task, right brain."},
+ {q:"A pro's typical setup, according to the reviewer, is to…",
+  opts:["Use only the most expensive tool","Keep 2–3 tools open and route tasks to the right one","Rotate tools alphabetically each day","Ask all five the same question every time"],a:1,
+  ex:"Routing is the skill: keep a few brains open and send each task to the one whose strengths fit."},
+ {q:"In the C.R.A.F.T. prompting method, what does the 'R' stand for?",
+  opts:["Results","Reasoning","Role","Rules"],a:2,
+  ex:"C.R.A.F.T. = Context, Role, Action, Format, Tone/examples. 'Role' means telling the AI who to act as."},
+ {q:"In C.R.A.F.T., what does the 'F' stand for?",
+  opts:["Facts","Format — how the output should look","Feedback","Frequency"],a:1,
+  ex:"Format tells the AI the shape of the output: 'a numbered list, each under 10 words, with a 1-line rationale.'"},
+ {q:"'Act as a direct-response copywriter with 15 years of experience' is an example of which C.R.A.F.T. ingredient?",
+  opts:["Context","Role","Action","Format"],a:1,
+  ex:"Assigning who the AI should act as is the Role ingredient — it sets the expertise and perspective."},
+ {q:"'We buy houses for cash in the Bay Area; our audience is homeowners facing foreclosure' is an example of which ingredient?",
+  opts:["Context","Role","Format","Tone"],a:0,
+  ex:"That's background the AI needs to do the job well — Context, the C in C.R.A.F.T."},
+ {q:"This prompt: 'Act as an SEO expert. Write 10 blog titles as a bulleted list.' Which C.R.A.F.T. ingredient is most clearly MISSING?",
+  opts:["Role","Action","Format","Context — there's no background about the business or audience"],a:3,
+  ex:"It has Role (SEO expert), Action (write 10 titles), and Format (bulleted list) — but zero context about the company, audience, or topic."},
+ {q:"Why do we include examples of past winning work in a prompt (the 'T' in C.R.A.F.T.)?",
+  opts:["To make the prompt longer","To show the AI the style and pattern to imitate","Because the AI charges less with examples","Examples are required or the AI won't answer"],a:1,
+  ex:"Examples are the fastest way to communicate tone and style — the AI imitates the pattern you show it."},
+ {q:"The AI gives you a decent first draft. What is the professional next step?",
+  opts:["Accept it — the first answer is usually the best one","Iterate: reply with specific corrections like you would to a junior teammate","Start a brand-new chat and try a totally different prompt","Copy it into three other AIs and combine all four versions"],a:1,
+  ex:"Draft one is a starting point. Iterating in the same chat ('shorter', 'less formal', 'do the same for the other brand') gets you to usable output fast."},
+ {q:"The AI's output is too formal for your audience. Best response?",
+  opts:["Give up and write it yourself from scratch","Reply in the same chat: 'Too formal — rewrite like you're texting a friend'","Report the AI as broken","Accept it anyway since the AI knows best"],a:1,
+  ex:"Correct it like a teammate. Specific feedback in the same conversation is the fastest path to the output you want."},
+ {q:"The 'ask the AI to interview you' technique means…",
+  opts:["Using AI to practice job interviews","Asking the AI 5 questions about its own abilities","Telling the AI to ask YOU clarifying questions before it starts the task","Recording a voice conversation with the AI"],a:2,
+  ex:"'Before you write anything, ask me 5 questions that would make this better.' It pulls out context you forgot to provide."},
+ {q:"When is the 'ask the AI to interview you' move most valuable?",
+  opts:["When the task is complex and you might be forgetting important context","Only when using voice mode","When you want a shorter answer","Never — it wastes tokens"],a:0,
+  ex:"On complex tasks, the AI's questions surface missing context — budget, audience, constraints — before it wastes a draft."},
+ {q:"What is a 'hallucination' in AI terms?",
+  opts:["When the AI refuses to answer a question","When the AI confidently states false information as if it were true","When the AI's servers go down","When the AI repeats your own words back to you"],a:1,
+  ex:"LLMs can invent stats, links, laws, and quotes — delivered fluently and confidently. That's a hallucination."},
+ {q:"Which of these AI outputs is MOST important to verify before using it in real work?",
+  opts:["A brainstormed list of blog topic ideas","A rewritten, friendlier version of your own email","A specific statistic with a cited source, going into a client-facing report","Five alternative headlines for an ad you'll test"],a:2,
+  ex:"Facts, numbers, and citations going to clients are highest-risk — hallucinated stats there cause real damage. Brainstorms and rewrites of your own text are low-risk."},
+ {q:"Which of these is the LOWEST-risk use of AI?",
+  opts:["Publishing an AI-written legal claim about foreclosure law","Rewriting your own email draft to sound friendlier","Quoting an AI-provided statistic in a client report","Citing a study link the AI generated, without clicking it"],a:1,
+  ex:"Rewriting your own words is low-risk — you already know the facts. Legal claims, stats, and citations are the high-risk categories."},
+ {q:"The AI cites a study with a link. What must you do before using that citation?",
+  opts:["Nothing — cited sources are always real","Click the link and confirm the source actually exists and says what the AI claims","Ask the AI to make the link shorter","Change the link color to blue"],a:1,
+  ex:"Fake citations are a common hallucination. Every link and quote gets clicked and confirmed before it goes into real work."},
+ {q:"What does 'context window' mean?",
+  opts:["The time of day the AI works best","How much text the model can consider at once","The pop-up window where you type","The AI's webcam view"],a:1,
+  ex:"A bigger context window means the model can handle longer documents and longer conversations — why Claude and Kimi are the long-document picks."},
+ {q:"Why do AI tools sometimes give outdated answers about recent events?",
+  opts:["They intentionally hide new information","Their training data has a cutoff date, so they don't know what happened after it","Recent events are blocked by law","They only update on weekends"],a:1,
+  ex:"Models are trained up to a cutoff. For anything recent, use a tool with live search (like Grok or web-search features) or verify manually."},
+ {q:"A good tactic when you suspect an AI answer might be wrong is to…",
+  opts:["Ask the same AI 'are you sure?' and stop there","Paste the answer into a different AI to fact-check, then verify sources yourself","Assume it's right if it sounds confident","Delete the chat and start over"],a:1,
+  ex:"Cross-examine, get a second model's opinion, and check a real source. Confidence of tone means nothing — hallucinations sound confident too."},
+ {q:"Does a confident tone from the AI mean the answer is more likely correct?",
+  opts:["Yes — confidence signals accuracy","No — hallucinations sound just as confident as facts","Only in paid versions","Only for math questions"],a:1,
+  ex:"Fluency and confidence are how LLMs write everything, true or false. Verify based on the stakes, not the tone."},
+ {q:"The AI tells you: 'The average Bay Area cash sale closes in 9.4 days.' You want to put this on a client-facing webpage. What do you do?",
+  opts:["Publish it — it's very specific so it must be true","Verify the number against a real source first; if you can't verify it, don't publish it","Round it to 9 days to be safe","Ask the same AI to repeat it once more"],a:1,
+  ex:"Specific-sounding statistics are classic hallucinations. Client-facing numbers get verified or cut. 'The AI said so' is not a defense."},
+ {q:"An AI-drafted paragraph makes a claim about California foreclosure notice requirements. Before it goes into a mailer, who or what should confirm it?",
+  opts:["A second AI is enough for legal claims","An official/legal source or qualified human review — legal claims are highest-risk","No check needed if the AI sounded sure","Whichever teammate is free"],a:1,
+  ex:"Legal, tax, and compliance claims are in the highest-risk category. They get verified against authoritative sources or reviewed by a qualified human — never published on AI say-so."},
+ {q:"'Treat prompts like postcards, not sealed letters' means…",
+  opts:["Keep prompts under 100 words","Assume the provider could store and read what you paste, so don't paste secrets","Always write prompts by hand first","Send prompts by mail for security"],a:1,
+  ex:"Anything pasted into a public AI tool may be stored on the provider's servers and possibly used for training. Write accordingly."},
+ {q:"Which item is NEVER acceptable to paste into a public AI chatbot?",
+  opts:["A public blog post you want summarized","A client's real name together with their foreclosure and financial details","A generic question about plumbing SEO","Anonymized data like 'a homeowner in the Bay Area behind on payments'"],a:1,
+  ex:"Client PII combined with distress/financial details is a hard no. Anonymize first."},
+ {q:"A teammate pastes a system password into an AI chat to get help debugging a login issue. What's the verdict?",
+  opts:["Fine, since it's for work","Fine, if they delete the chat after","Not acceptable — credentials, passwords, and API keys never go into AI tools","Fine, if the AI promises to forget it"],a:2,
+  ex:"Passwords, API keys, and login credentials never go into a chatbot — even for debugging. Redact or use placeholders."},
+ {q:"What is the correct way to get AI help on a client situation without exposing PII?",
+  opts:["Use the client's initials only","Anonymize: describe the situation generically, e.g. 'a homeowner in San Mateo behind on payments'","Paste everything but ask the AI to keep it secret","Use a smaller font"],a:1,
+  ex:"Strip names, addresses, and exact identifying figures. The AI can help with the situation without knowing who it is."},
+ {q:"Why does the reviewer say to be EXTRA strict with company data in DeepSeek and Kimi specifically?",
+  opts:["They are lower quality than the other tools","Their servers are based in China, adding data-privacy risk","They charge per word you paste","They automatically post your chats publicly"],a:1,
+  ex:"Both are strong tools — the caution is jurisdictional. Use them for generic reasoning and public info, not sensitive company or client data."},
+ {q:"You want to analyze unreleased company financials in a very long spreadsheet. Kimi's long context would be handy. What's the right call?",
+  opts:["Use Kimi — long context beats privacy rules","Use a company-approved tool instead, or anonymize the data first — sensitive financials don't go to China-based servers","Split the file so Kimi doesn't notice","Ask Kimi to promise confidentiality"],a:1,
+  ex:"Capability never overrides the privacy policy. Sensitive company data goes only into approved tools, or gets anonymized first."},
+ {q:"What is the 'Draft → Critique → Polish' chain?",
+  opts:["Asking one AI to write, a different AI to find weaknesses, then polishing with the critique","Writing three drafts in the same chat","Having the AI grade its own work three times","Sending drafts to three teammates"],a:0,
+  ex:"Different models have different blind spots. Using one model to critique another catches errors a single model misses."},
+ {q:"In the 'Summarize → Decide' pattern, what do you ask the AI to produce from a long report?",
+  opts:["Only a word count","A short summary plus the decisions the data suggests, with supporting evidence","A translation into another language","A longer version of the report"],a:1,
+  ex:"E.g. 'Summarize in 10 bullets, then list the 3 decisions this data suggests, with the strongest evidence for each.' Summary + decisions, not just summary."},
+ {q:"In the 'Brainstorm → Filter' pattern, what do you ask for FIRST?",
+  opts:["A single perfect idea","A large unfiltered list (e.g., 20 ideas), before any ranking","The AI's confidence score","A summary of your criteria"],a:1,
+  ex:"Volume first, judgment second. Get 20 unfiltered ideas, then have the AI score them against your criteria and defend the top picks."},
+ {q:"Which task is a perfect fit for 'Brainstorm → Filter'?",
+  opts:["Verifying a legal statistic","Naming a new campaign: get 20 name ideas, then rank them by memorability and fit","Sending a final contract","Fixing a server outage"],a:1,
+  ex:"Creative volume tasks (names, hooks, angles) fit the pattern: generate wide, then filter against criteria."},
+ {q:"Which task should NOT be delegated to AI as the final decision-maker?",
+  opts:["Generating 20 headline variations to test","Summarizing a long report into bullets","Deciding the final offer price on a property","Reformatting a messy list into a table"],a:2,
+  ex:"Pricing, hiring, and legal commitments are human decisions. AI informs; humans decide — especially anything with money or contracts attached."},
+ {q:"A client is upset and deserves a sincere apology. What's the guidance?",
+  opts:["Have AI write it — apologies are just templates","Write it yourself; sensitive communications like apologies and bad news should be human-led","Send the AI's first draft immediately to save time","Have three AIs vote on the best apology"],a:1,
+  ex:"Apologies, conflict, and bad news are in the 'when NOT to use AI' list. People can tell — and the relationship is what's at stake."},
+ {q:"You're about to send an AI-drafted email to your manager under your own name. What's the non-negotiable rule?",
+  opts:["Mention that AI wrote it in the subject line","Read and own every word before sending — your name means you're accountable","Run it through at least 3 different AIs first","Never use AI for emails to managers"],a:1,
+  ex:"Using AI to draft is fine. Sending unread AI output under your name is not — if your name is on it, you own every word."},
+ {q:"According to the accountability rule, if AI-drafted work you sent contains an error, who is responsible?",
+  opts:["The AI company","Nobody — errors are expected with AI","You — your name on it means you own every word, no matter which brain drafted it","The teammate who recommended the tool"],a:2,
+  ex:"The accountability rule: if your name is on it, you own every word. That's why reading and verifying before sending is non-negotiable."}
+];
+/* ==================== REVIEW GATE ==================== */
+const SEC_NAMES=[
+ "1 · AI Is a Brain, Not a Vending Machine",
+ "2 · Meet the Five Brains",
+ "3 · Prompting: The C.R.A.F.T. Method",
+ "4 · Hallucinations",
+ "5 · Data Privacy",
+ "6 · Workflows",
+ "7 · When NOT to Use AI"
+];
+const reviewed=new Array(7).fill(false);
+function markReviewed(btn){
+  const i=parseInt(btn.dataset.sec,10);
+  reviewed[i]=true;
+  btn.classList.add('done');
+  btn.textContent='✓ Section '+(i+1)+' reviewed';
+  btn.disabled=true;
+  updateGate();
+}
+function allReviewed(){return reviewed.every(Boolean);}
+function updateGate(){
+  const done=reviewed.filter(Boolean).length;
+  document.getElementById('pLabel').textContent='Review progress: '+done+' / 7 sections';
+  document.getElementById('pFill').style.width=(done/7*100)+'%';
+  const tab=document.getElementById('tabExam');
+  const goBtn=document.getElementById('goExamBtn');
+  if(allReviewed()){
+    tab.classList.remove('locked');
+    tab.textContent='✍️ Exam (Unlocked)';
+    goBtn.disabled=false;
+    goBtn.textContent='✓ Reviewer complete — start the exam →';
+    document.getElementById('examLocked').style.display='none';
+    document.getElementById('examBody').style.display='block';
+  }else{
+    // refresh lock list
+    const list=document.getElementById('lockList');
+    list.innerHTML='';
+    SEC_NAMES.forEach((n,i)=>{
+      const li=document.createElement('li');
+      li.className=reviewed[i]?'ok':'pending';
+      li.textContent=(reviewed[i]?'✓ ':'✗ ')+'Section '+n;
+      list.appendChild(li);
+    });
+  }
+}
+/* ==================== BUILD QUESTIONS ==================== */
+const qWrap=document.getElementById('questions');
+QUESTIONS.forEach((item,i)=>{
+  const div=document.createElement('div');
+  div.className='q';div.id='q'+i;
+  let html='<div class="qnum">Question '+(i+1)+' of '+QUESTIONS.length+'</div>'
+    +'<div class="qtext">'+item.q+'</div>';
+  item.opts.forEach((o,j)=>{
+    html+='<label><input type="radio" name="q'+i+'" value="'+j+'"><span>'+o+'</span></label>';
+  });
+  html+='<div class="verdict"></div><div class="expl"><strong>Explanation:</strong> '+item.ex+'</div>';
+  div.innerHTML=html;
+  qWrap.appendChild(div);
+});
+/* ==================== TABS ==================== */
+function showTab(name){
+  if(name==='exam' && !allReviewed()){
+    // allow visiting the exam tab, but it shows the lock screen
+    updateGate();
+  }
+  document.getElementById('reviewer').classList.toggle('show',name==='reviewer');
+  document.getElementById('exam').classList.toggle('show',name==='exam');
+  document.getElementById('tabReviewer').classList.toggle('active',name==='reviewer');
+  document.getElementById('tabExam').classList.toggle('active',name==='exam');
+  window.scrollTo({top:0});
+}
+/* ==================== GRADING ==================== */
+function grade(){
+  const un=document.getElementById('unanswered');
+  // require name
+  const nameInput=document.getElementById('examName');
+  const name=nameInput.value.trim();
+  if(!name){
+    un.style.display='block';
+    un.innerHTML='<strong>Hold on —</strong> enter your full name at the top of the exam so your result card is valid.';
+    nameInput.scrollIntoView({behavior:'smooth',block:'center'});
+    nameInput.focus();
+    return;
+  }
+  // completeness
+  const missing=[];
+  QUESTIONS.forEach((_,i)=>{
+    if(!document.querySelector('input[name=q'+i+']:checked')) missing.push(i+1);
+  });
+  if(missing.length){
+    un.style.display='block';
+    const shown=missing.slice(0,12).join(', ')+(missing.length>12?'…':'');
+    un.innerHTML='<strong>Hold on —</strong> you skipped '+missing.length+' question'+(missing.length>1?'s':'')+' ('+shown+'). Answer every question, then submit.';
+    document.getElementById('q'+(missing[0]-1)).scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  un.style.display='none';
+  let score=0;
+  QUESTIONS.forEach((item,i)=>{
+    const qEl=document.getElementById('q'+i);
+    qEl.classList.add('graded');
+    const chosen=parseInt(document.querySelector('input[name=q'+i+']:checked').value,10);
+    qEl.querySelectorAll('label').forEach((lb,j)=>{
+      lb.querySelector('input').disabled=true;
+      if(j===item.a) lb.classList.add('correct');
+      if(j===chosen && chosen!==item.a) lb.classList.add('wrong');
+    });
+    const v=qEl.querySelector('.verdict');
+    if(chosen===item.a){score++;v.textContent='✓ Correct';v.classList.add('ok');}
+    else{v.textContent='✗ Incorrect';v.classList.add('no');}
+  });
+  const total=QUESTIONS.length;
+  const pct=Math.round(score/total*100);
+  const pass=score>=40;
+  const now=new Date();
+  const dateStr=now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'})
+    +' · '+now.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+  const card=document.getElementById('scorecard');
+  card.className=pass?'pass':'fail';
+  document.getElementById('scoreName').textContent=name;
+  document.getElementById('scoreDate').textContent='Completed: '+dateStr;
+  document.getElementById('scoreNum').textContent=score+' / '+total;
+  document.getElementById('scoreStatus').textContent=pass?'✓ PASSED — Certified':'✗ FAILED — Retake required';
+  document.getElementById('scoreBreak').textContent='Score: '+pct+'% · Passing mark: 80% (40/50) · '+(total-score)+' incorrect';
+  document.getElementById('scoreMsg').textContent=pass
+    ?'Nice work, '+name.split(' ')[0]+'. Screenshot this result card and send it to your team lead as proof of completion.'
+    :'You need 40/50 to pass. Scroll up to review the explanations on your incorrect answers, re-read the reviewer, then retake the exam.';
+  card.scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('submitBtn').style.display='none';
+  document.getElementById('retakeBtn').style.display='inline-block';
+  nameInput.disabled=true;
+}
+function retake(){
+  QUESTIONS.forEach((_,i)=>{
+    const qEl=document.getElementById('q'+i);
+    qEl.classList.remove('graded');
+    qEl.querySelectorAll('label').forEach(lb=>{
+      lb.classList.remove('correct','wrong');
+      const inp=lb.querySelector('input');
+      inp.disabled=false;inp.checked=false;
+    });
+    const v=qEl.querySelector('.verdict');
+    v.textContent='';v.classList.remove('ok','no');
+  });
+  const card=document.getElementById('scorecard');
+  card.className='';
+  document.getElementById('submitBtn').style.display='inline-block';
+  document.getElementById('retakeBtn').style.display='none';
+  const nameInput=document.getElementById('examName');
+  nameInput.disabled=false;
+  document.getElementById('unanswered').style.display='none';
+  window.scrollTo({top:0});
+}
+updateGate();
+</script>
+</body>
+</html>
