@@ -42,10 +42,19 @@ export async function getNextResponse(
   });
 
   // Build Gemini chat history format
-  const history = session.conversationHistory.slice(0, -1).map(msg => ({
+  // Gemini requires history to START with a user message — skip any
+  // leading assistant messages (e.g. the opening script)
+  const allHistory = session.conversationHistory.slice(0, -1).map(msg => ({
     role: msg.role === "assistant" ? "model" : "user",
     parts: [{ text: msg.content }]
   }));
+
+  // Drop leading "model" turns until we hit the first "user" turn
+  let startIdx = 0;
+  while (startIdx < allHistory.length && allHistory[startIdx].role === "model") {
+    startIdx++;
+  }
+  const history = allHistory.slice(startIdx);
 
   const chat = model.startChat({ history });
   const result = await chat.sendMessage(candidateAnswer);
