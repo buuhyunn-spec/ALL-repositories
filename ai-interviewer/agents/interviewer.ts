@@ -37,7 +37,7 @@ export async function getNextResponse(
   });
 
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",   // free tier
+    model: "gemini-3.6-flash",   // free tier
     systemInstruction: buildSystemPrompt(session)
   });
 
