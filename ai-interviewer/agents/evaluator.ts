@@ -61,7 +61,7 @@ export async function evaluateInterview(
     .join(",\n    ");
 
   const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash",
     systemInstruction: `
 You are an interview evaluator for the position of ${rubric.position}.
 Score the candidate based ONLY on evidence from the transcript.
