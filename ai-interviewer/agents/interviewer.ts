@@ -1,10 +1,9 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { InterviewSession, InterviewStage, InterviewerResponse, JobRubric } from "../types";
-import { getNextStage } from "../interview/state-machine";
-import { getStageObjective } from "../interview/state-machine";
+import { getNextStage, getStageObjective } from "../interview/state-machine";
 import { COMPLIANCE_RULES, DISALLOWED_QUESTION_PROMPT } from "../interview/safeguards";
 
-const client = new Anthropic();
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 // ─────────────────────────────────────────────
 // Opening script — hardcoded, no API call needed
@@ -32,26 +31,28 @@ export async function getNextResponse(
   candidateAnswer: string
 ): Promise<InterviewerResponse> {
 
-  // Append candidate's answer to conversation history
   session.conversationHistory.push({
     role: "user",
     content: candidateAnswer
   });
 
-  const response = await client.messages.create({
-    model: "claude-opus-5",
-    max_tokens: 500,
-    system: buildSystemPrompt(session),
-    messages: session.conversationHistory
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",   // free tier
+    systemInstruction: buildSystemPrompt(session)
   });
 
-  const raw = response.content[0].type === "text"
-    ? response.content[0].text
-    : "";
+  // Build Gemini chat history format
+  const history = session.conversationHistory.slice(0, -1).map(msg => ({
+    role: msg.role === "assistant" ? "model" : "user",
+    parts: [{ text: msg.content }]
+  }));
+
+  const chat = model.startChat({ history });
+  const result = await chat.sendMessage(candidateAnswer);
+  const raw = result.response.text();
 
   const parsed = parseResponse(raw);
 
-  // Append AI's spoken response to history
   session.conversationHistory.push({
     role: "assistant",
     content: parsed.speech
@@ -130,11 +131,10 @@ ${getUnaskedQuestions(jobRubric, questionsAsked)}
 ═══════════════════════════════════════════
 FOLLOW-UP RULES
 ═══════════════════════════════════════════
-- If an answer is vague, ask ONE follow-up: "Can you tell me more about that?"
-- If an answer fully covers the question, move on — do not repeat it
-- Maximum 2 follow-ups per question, then move forward
-- If the candidate already answered a question naturally, skip it
-- Keep responses brief and conversational — under 3 sentences
+- If an answer is vague, ask ONE follow-up
+- If an answer fully covers the question, move on
+- Maximum 2 follow-ups per question then move forward
+- Keep responses brief — under 3 sentences
 
 ═══════════════════════════════════════════
 ${COMPLIANCE_RULES}
@@ -150,12 +150,7 @@ OUTPUT — ALWAYS RETURN VALID JSON ONLY
   "internal_note": "One sentence: why you chose this action"
 }
 
-Action rules:
-- "continue"       → still working through current stage
-- "advance_stage"  → current stage objective is complete, move to next
-- "end_interview"  → all stages complete or closing is done
-
-Return ONLY the JSON object. No markdown fences. No extra text.
+Return ONLY the JSON object. No markdown. No extra text.
 `.trim();
 }
 
@@ -169,19 +164,10 @@ function formatCompetencies(rubric: JobRubric): string {
     .join("\n");
 }
 
-function getUnaskedQuestions(
-  rubric: JobRubric,
-  questionsAsked: string[]
-): string {
-  const all = [
-    ...rubric.standardQuestions,
-    ...rubric.roleSpecificQuestions
-  ];
+function getUnaskedQuestions(rubric: JobRubric, questionsAsked: string[]): string {
+  const all = [...rubric.standardQuestions, ...rubric.roleSpecificQuestions];
   const unasked = all.filter(q => !questionsAsked.includes(q));
-
-  if (unasked.length === 0) {
-    return "All planned questions have been covered.";
-  }
+  if (unasked.length === 0) return "All planned questions have been covered.";
   return unasked.map((q, i) => `${i + 1}. ${q}`).join("\n");
 }
 
@@ -194,20 +180,12 @@ function parseResponse(raw: string): InterviewerResponse {
 
   try {
     const parsed = JSON.parse(cleaned);
-
-    if (!parsed.speech || !parsed.action) {
-      throw new Error("Missing required fields");
-    }
-
-    const validActions = ["continue", "advance_stage", "end_interview"];
-    if (!validActions.includes(parsed.action)) {
-      parsed.action = "continue";
-    }
-
+    if (!parsed.speech || !parsed.action) throw new Error("Missing fields");
+    const valid = ["continue", "advance_stage", "end_interview"];
+    if (!valid.includes(parsed.action)) parsed.action = "continue";
     return parsed as InterviewerResponse;
-
-  } catch (err) {
-    console.error("[interviewer] Failed to parse response:", raw);
+  } catch {
+    console.error("[interviewer] Parse error:", raw);
     return {
       speech: "Could you tell me a little more about that?",
       action: "continue",

@@ -154,10 +154,11 @@ async function runSimulation(): Promise<void> {
       }
 
     } catch (err: any) {
-      if (err.message?.includes("API key")) {
-        console.log(`\n${C.yellow}⚠ No ANTHROPIC_API_KEY found in .env${C.reset}`);
-        console.log(`${C.gray}Add your key to .env and try again:${C.reset}`);
-        console.log(`  ANTHROPIC_API_KEY=sk-ant-...`);
+      if (err.message?.includes("API key") || err.message?.includes("GEMINI")) {
+        console.log(`\n${C.yellow}⚠ No GEMINI_API_KEY found in .env${C.reset}`);
+        console.log(`${C.gray}Get a free key at: aistudio.google.com${C.reset}`);
+        console.log(`${C.gray}Then add to .env:${C.reset}`);
+        console.log(`  GEMINI_API_KEY=AIza...`);
         break;
       }
       console.error(`\nError: ${err.message}`);
