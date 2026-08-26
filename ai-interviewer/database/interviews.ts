@@ -130,7 +130,15 @@ function rowToSession(row: SheetRow): InterviewSession {
     questionsAsked:      safeParseJSON<string[]>(row.questions_asked, []),
     conversationHistory: safeParseJSON(row.conversation_history, []),
     transcript:          [],        // loaded separately from transcript tab
-    jobRubric:           null as any, // loaded separately from jobs tab
+    jobRubric:           {           // minimal — full rubric loaded separately from jobs tab
+      position:              row.position ?? "",
+      minimumRequirements:   [],
+      competencies:          [],
+      advanceThreshold:      80,
+      reviewThreshold:       65,
+      standardQuestions:     [],
+      roleSpecificQuestions: []
+    },
     cancelReason:        row.cancel_reason || undefined,
     rescheduledToUri:    row.rescheduled_to_uri || undefined,
     createdAt:           row.created_at
