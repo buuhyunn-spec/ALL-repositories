@@ -1,0 +1,1131 @@
+<title>FAQ Schema Field Guide</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<style>
+/* ---------- tokens: light is the base set ---------- */
+:root{
+  --paper:#F7F7F3;
+  --surface:#FFFFFF;
+  --surface-2:#EFF1EB;
+  --ink:#16201D;
+  --ink-soft:#41504A;
+  --ink-mute:#6B7A73;
+  --rule:#DBDDD2;
+  --rule-soft:#E7E9E0;
+  --deep:#0F5257;
+  --deep-ink:#0F5257;
+  --deep-soft:#DEEAE9;
+  --mark:#F5C518;
+  --wash-q:rgba(245,197,24,.45);
+  --wash-a:rgba(15,82,87,.15);
+  --stop:#9E2A1C;
+  --stop-wash:#FAEAE6;
+  --stop-rule:#E8C4BB;
+  --code-bg:#12201F;
+  --code-ink:#DDE6E2;
+  --shadow:0 1px 1px rgba(22,32,29,.04), 0 10px 26px -20px rgba(22,32,29,.45);
+  --focus:#0F5257;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111716;
+    --surface:#18211F;
+    --surface-2:#1E2826;
+    --ink:#E9EDE9;
+    --ink-soft:#B4C0BA;
+    --ink-mute:#8A968F;
+    --rule:#2C3835;
+    --rule-soft:#232E2B;
+    --deep:#63C7BC;
+    --deep-ink:#8FD9D0;
+    --deep-soft:#16302F;
+    --mark:#F5C518;
+    --wash-q:rgba(245,197,24,.30);
+    --wash-a:rgba(99,199,188,.20);
+    --stop:#F0907C;
+    --stop-wash:#31201C;
+    --stop-rule:#5A3830;
+    --code-bg:#0C1413;
+    --code-ink:#D6E0DC;
+    --shadow:0 1px 1px rgba(0,0,0,.3), 0 10px 26px -20px rgba(0,0,0,.9);
+    --focus:#63C7BC;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111716;
+  --surface:#18211F;
+  --surface-2:#1E2826;
+  --ink:#E9EDE9;
+  --ink-soft:#B4C0BA;
+  --ink-mute:#8A968F;
+  --rule:#2C3835;
+  --rule-soft:#232E2B;
+  --deep:#63C7BC;
+  --deep-ink:#8FD9D0;
+  --deep-soft:#16302F;
+  --mark:#F5C518;
+  --wash-q:rgba(245,197,24,.30);
+  --wash-a:rgba(99,199,188,.20);
+  --stop:#F0907C;
+  --stop-wash:#31201C;
+  --stop-rule:#5A3830;
+  --code-bg:#0C1413;
+  --code-ink:#D6E0DC;
+  --shadow:0 1px 1px rgba(0,0,0,.3), 0 10px 26px -20px rgba(0,0,0,.9);
+  --focus:#63C7BC;
+}
+
+/* ---------- base ---------- */
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Source Serif 4","Iowan Old Style",Georgia,serif;
+  font-size:17.5px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.u{font-family:Archivo,"Helvetica Neue",Arial,sans-serif}
+h1,h2,h3,h4{text-wrap:balance;margin:0;line-height:1.15;letter-spacing:-.012em}
+p{margin:0}
+a{color:var(--deep-ink);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:3px}
+code,kbd,pre,.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+code{
+  font-size:.86em;background:var(--surface-2);color:var(--ink);
+  padding:.12em .36em;border-radius:4px;border:1px solid var(--rule-soft);
+}
+.u{text-transform:uppercase;letter-spacing:.12em;font-size:11.5px;font-weight:600}
+
+/* ---------- shell ---------- */
+.shell{max-width:1220px;margin:0 auto;padding:0 clamp(18px,4vw,48px)}
+.doc{display:block}
+.col{min-width:0;max-width:760px}
+.prose{max-width:66ch}
+.stack{display:flex;flex-direction:column}
+.gap-s{gap:12px}.gap-m{gap:20px}.gap-l{gap:32px}
+
+/* ---------- masthead ---------- */
+.masthead{
+  border-bottom:1px solid var(--rule);
+  background:
+    linear-gradient(180deg,var(--surface) 0%,var(--paper) 100%);
+}
+.masthead .shell{padding-top:clamp(34px,6vw,64px);padding-bottom:clamp(28px,4vw,44px)}
+.eyebrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;color:var(--ink-mute)}
+.eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--mark)}
+h1{
+  font-size:clamp(34px,6.2vw,60px);font-weight:700;letter-spacing:-.026em;
+  margin:16px 0 0;max-width:16ch;
+}
+h1 .mkline{
+  background-image:linear-gradient(transparent 62%,var(--wash-q) 62%);
+  padding:0 .06em;
+}
+.deck{margin-top:18px;max-width:56ch;font-size:clamp(18px,2.2vw,21px);color:var(--ink-soft)}
+.facts{
+  margin-top:34px;display:grid;gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:10px;overflow:hidden;
+  grid-template-columns:1fr;
+}
+@media (min-width:560px){.facts{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:900px){.facts{grid-template-columns:repeat(3,1fr)}}
+.fact{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:5px}
+.fact dt{color:var(--ink-mute)}
+.fact dd{margin:0;font-size:15.5px;line-height:1.4}
+.pill{
+  display:inline-flex;align-items:center;gap:7px;font-family:Archivo,sans-serif;
+  font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;
+  background:var(--deep-soft);color:var(--deep-ink);border:1px solid transparent;
+}
+.pill.go::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--deep)}
+
+/* ---------- layout with rail ---------- */
+.body-wrap{padding:clamp(34px,5vw,56px) 0 0}
+@media (min-width:1040px){
+  .doc{display:grid;grid-template-columns:212px minmax(0,1fr);gap:clamp(40px,6vw,84px);align-items:start}
+}
+.rail{display:none}
+@media (min-width:1040px){
+  .rail{display:block;position:sticky;top:24px;padding-bottom:40px}
+}
+.rail h2{font-size:11.5px}
+.rail ol{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{
+  display:flex;gap:10px;text-decoration:none;color:var(--ink-soft);
+  font-family:Archivo,sans-serif;font-size:13.5px;line-height:1.3;
+  padding:6px 8px;border-radius:6px;border-left:2px solid transparent;
+}
+.rail a:hover{background:var(--surface);color:var(--ink)}
+.rail a .n{color:var(--ink-mute);font-variant-numeric:tabular-nums;font-weight:600}
+.rail a.on{border-left-color:var(--mark);background:var(--surface);color:var(--ink)}
+
+/* ---------- sections ---------- */
+section{scroll-margin-top:20px}
+.sec{padding-bottom:clamp(44px,6vw,72px)}
+.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.sec-head .u{color:var(--deep-ink)}
+h2{font-size:clamp(25px,3.4vw,33px);font-weight:700}
+h3{font-size:20px;font-weight:600}
+h4{font-size:15px;font-weight:600;letter-spacing:.01em}
+.lede{font-size:19px;color:var(--ink-soft);max-width:60ch}
+hr.rule{border:0;border-top:1px solid var(--rule);margin:0 0 clamp(40px,5vw,60px)}
+
+/* ---------- panels & callouts ---------- */
+.card{
+  background:var(--surface);border:1px solid var(--rule);border-radius:12px;
+  padding:22px 24px;box-shadow:var(--shadow);
+}
+.note{
+  border:1px solid var(--rule);border-left:3px solid var(--mark);
+  background:var(--surface);border-radius:0 10px 10px 0;padding:16px 18px;
+  display:flex;flex-direction:column;gap:7px;
+}
+.note .u{color:var(--ink-mute)}
+.note p{font-size:16.5px;color:var(--ink-soft)}
+.warn{
+  border:1px solid var(--stop-rule);border-left:3px solid var(--stop);
+  background:var(--stop-wash);border-radius:0 10px 10px 0;padding:16px 18px;
+  display:flex;flex-direction:column;gap:7px;
+}
+.warn .u{color:var(--stop)}
+.warn p{font-size:16.5px;color:var(--ink-soft)}
+.warn a{color:var(--stop)}
+
+/* ---------- the visitor / machine figure ---------- */
+.figure{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+@media (min-width:720px){.figure{grid-template-columns:1fr 1fr}}
+.pane{background:var(--surface);padding:20px 22px 24px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pane-label{display:flex;align-items:center;gap:8px;color:var(--ink-mute)}
+.pane-label .glyph{
+  width:20px;height:20px;border-radius:5px;display:grid;place-items:center;
+  background:var(--surface-2);color:var(--ink-soft);font-size:11px;font-family:"IBM Plex Mono",monospace;
+}
+.mock{border:1px dashed var(--rule);border-radius:8px;padding:16px;background:var(--paper)}
+.mock .mock-h{font-family:Archivo,sans-serif;font-size:17px;font-weight:600;margin-bottom:8px}
+.mock p{font-size:15.5px;color:var(--ink-soft)}
+.pane .cap{margin-top:auto;font-size:15.5px;color:var(--ink-mute)}
+.jsonbox{
+  background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:14px 16px;
+  font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.75;overflow-x:auto;white-space:pre-wrap;
+}
+.jsonbox .k{color:#8FD9D0}
+.jsonbox .punc{color:#7E8D89}
+.hl-q{background-image:linear-gradient(transparent 58%,var(--wash-q) 58%);padding:0 2px;border-radius:2px}
+.hl-a{background-image:linear-gradient(transparent 58%,var(--wash-a) 58%);padding:0 2px;border-radius:2px}
+.jsonbox .hl-q{background:rgba(245,197,24,.26);background-image:none;color:#F6DE93}
+.jsonbox .hl-a{background:rgba(99,199,188,.18);background-image:none;color:#B7E6DF}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px}
+.legend span{display:flex;align-items:center;gap:8px;font-size:14.5px;color:var(--ink-soft)}
+.swatch{width:22px;height:12px;border-radius:3px;flex:none}
+.swatch.q{background:var(--wash-q)}
+.swatch.a{background:var(--wash-a)}
+
+/* ---------- glossary ---------- */
+.glossary{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+@media (min-width:680px){.glossary{grid-template-columns:1fr 1fr}}
+.term{background:var(--surface);padding:16px 18px;display:flex;flex-direction:column;gap:5px}
+.term dt{font-family:Archivo,sans-serif;font-weight:600;font-size:15.5px}
+.term dt .lit{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:500;color:var(--deep-ink)}
+.term dd{margin:0;font-size:15.5px;line-height:1.5;color:var(--ink-soft)}
+
+/* ---------- steps ---------- */
+.steps{position:relative;display:flex;flex-direction:column;gap:36px}
+.steps::before{
+  content:"";position:absolute;left:20px;top:14px;bottom:14px;width:2px;
+  background:var(--rule);
+}
+.step{position:relative;padding-left:66px}
+.step-num{
+  position:absolute;left:0;top:-2px;width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;background:var(--paper);
+  border:2px solid var(--rule);color:var(--ink);
+  font-family:Archivo,sans-serif;font-weight:700;font-size:16px;
+  font-variant-numeric:tabular-nums;
+}
+.step.lead .step-num{border-color:var(--deep);color:var(--deep-ink)}
+.step-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:10px}
+.tag{
+  font-family:Archivo,sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--ink-mute);border:1px solid var(--rule);
+  padding:2px 8px;border-radius:999px;background:var(--surface);white-space:nowrap;
+}
+.step.lead .tag{color:var(--deep-ink);border-color:var(--deep)}
+.step-body{display:flex;flex-direction:column;gap:14px}
+.step-body p{max-width:64ch}
+.step-body ol,.step-body ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;max-width:62ch}
+.step-body li::marker{color:var(--ink-mute)}
+@media (max-width:600px){
+  .steps::before{display:none}
+  .step{padding-left:0}
+  .step-num{position:static;margin-bottom:12px}
+}
+
+/* ---------- code block with copy ---------- */
+.codewrap{border-radius:10px;overflow:hidden;border:1px solid var(--rule)}
+.codebar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--surface-2);padding:8px 10px 8px 14px;border-bottom:1px solid var(--rule);
+}
+.codebar .u{color:var(--ink-mute)}
+.copy{
+  font-family:Archivo,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;
+  background:var(--surface);color:var(--ink);border:1px solid var(--rule);
+  padding:5px 11px;border-radius:6px;
+}
+.copy:hover{border-color:var(--deep);color:var(--deep-ink)}
+pre{
+  margin:0;background:var(--code-bg);color:var(--code-ink);padding:16px 18px;
+  overflow-x:auto;font-size:13px;line-height:1.7;
+}
+pre code{background:none;border:0;padding:0;color:inherit;font-size:13px}
+.copy-status{font-size:13px;color:var(--ink-mute);font-family:Archivo,sans-serif}
+
+/* ---------- rules ---------- */
+.rules{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.rules li{list-style:none;background:var(--surface);padding:15px 18px;display:flex;gap:14px;align-items:flex-start}
+.rules .no{
+  flex:none;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+  color:var(--stop);border:1.5px solid var(--stop-rule);border-radius:5px;
+  padding:1px 6px;margin-top:3px;background:var(--stop-wash);
+}
+.rules .txt{font-size:16.5px}
+.rules .txt strong{font-family:Archivo,sans-serif;font-weight:600}
+.rules .txt .why{display:block;color:var(--ink-mute);font-size:15px;margin-top:3px}
+
+/* ---------- checklists ---------- */
+.checklist{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.check{
+  background:var(--surface);padding:13px 18px;display:flex;gap:13px;align-items:flex-start;
+  cursor:pointer;font-size:16.5px;line-height:1.5;
+}
+.check:hover{background:var(--surface-2)}
+.check input{
+  appearance:none;-webkit-appearance:none;flex:none;margin:3px 0 0;
+  width:19px;height:19px;border:1.5px solid var(--ink-mute);border-radius:5px;
+  background:var(--paper);cursor:pointer;display:grid;place-items:center;
+}
+.check input::after{
+  content:"";width:10px;height:6px;border-left:2px solid var(--paper);border-bottom:2px solid var(--paper);
+  transform:rotate(-45deg) scale(.5);opacity:0;transition:opacity .12s ease,transform .12s ease;
+}
+.check input:checked{background:var(--deep);border-color:var(--deep)}
+.check input:checked::after{opacity:1;transform:rotate(-45deg) scale(1)}
+.check input:checked ~ .ct{color:var(--ink-mute);text-decoration:line-through;text-decoration-color:var(--rule)}
+@media (prefers-reduced-motion:reduce){.check input::after{transition:none}}
+.meter{display:flex;align-items:center;gap:12px;margin-top:14px}
+.meter .bar{flex:1;height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--rule-soft)}
+.meter .fill{height:100%;width:0;background:var(--deep);border-radius:99px;transition:width .2s ease}
+@media (prefers-reduced-motion:reduce){.meter .fill{transition:none}}
+.meter .count{font-family:Archivo,sans-serif;font-size:13px;font-weight:600;color:var(--ink-mute);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ---------- escalation ---------- */
+.stops{display:grid;gap:14px}
+@media (min-width:700px){.stops{grid-template-columns:1fr 1fr}}
+.stopcard{
+  border:1px solid var(--rule);border-radius:10px;background:var(--surface);
+  padding:16px 18px;display:flex;gap:12px;align-items:flex-start;
+}
+.stopcard .mark{
+  flex:none;width:24px;height:24px;border-radius:6px;background:var(--stop-wash);
+  color:var(--stop);display:grid;place-items:center;font-family:Archivo,sans-serif;
+  font-weight:700;font-size:14px;border:1px solid var(--stop-rule);
+}
+.stopcard p{font-size:16px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--rule);margin-top:20px;background:var(--surface)}
+footer .shell{padding-top:28px;padding-bottom:44px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:baseline}
+footer p{font-size:14.5px;color:var(--ink-mute);max-width:52ch}
+
+@media print{
+  .rail,.copy,.meter{display:none}
+  body{background:#fff;color:#000;font-size:11pt}
+  .card,.note,.warn,.checklist,.rules,.figure,.glossary{box-shadow:none}
+  .step{break-inside:avoid}
+  pre{background:#f4f4f4;color:#000;border:1px solid #ccc}
+}
+</style>
+
+<header class="masthead">
+  <div class="shell">
+    <div class="eyebrow u">
+      <span>SOP #1</span><span class="dot"></span>
+      <span>Twinhomebuyer AI Readiness</span><span class="dot"></span>
+      <span>Self-study edition</span>
+    </div>
+    <h1>Teaching Google to <span class="mkline">read your FAQs</span></h1>
+    <p class="deck">
+      128 pages on our site have real questions and answers on them &mdash; but Google can only
+      <em>see</em> the words, not the fact that they&rsquo;re questions and answers. Your job is to add
+      a small, invisible label to each page that spells it out. This guide walks you through it
+      even if you&rsquo;ve never touched code.
+    </p>
+
+    <dl class="facts">
+      <div class="fact">
+        <dt class="u">Status</dt>
+        <dd><span class="pill go">Ready to start &mdash; do this first</span></dd>
+      </div>
+      <div class="fact">
+        <dt class="u">Scope</dt>
+        <dd>128 pages flagged as &ldquo;FAQ content without FAQPage schema&rdquo;</dd>
+      </div>
+      <div class="fact">
+        <dt class="u">Tech stack</dt>
+        <dd>WordPress + Elementor, hosted on WP&nbsp;Engine</dd>
+      </div>
+      <div class="fact">
+        <dt class="u">Who owns it</dt>
+        <dd>Project Lead assigns work and unblocks issues</dd>
+      </div>
+      <div class="fact">
+        <dt class="u">Who does it</dt>
+        <dd>Team members, each assigned a batch of URLs</dd>
+      </div>
+      <div class="fact">
+        <dt class="u">Where the work is tracked</dt>
+        <dd><a href="https://docs.google.com/spreadsheets/d/1zy-ye4GGKH1xWCMS2Ie0l1yn9sOHRdtSgtzHuOs2sGM/edit?gid=0#gid=0">Google Sheet, <code>task</code> tab</a> &mdash; this <em>is</em> the ticket</dd>
+      </div>
+    </dl>
+  </div>
+</header>
+
+<div class="body-wrap">
+<div class="shell">
+<div class="doc">
+
+  <nav class="rail" aria-label="On this page">
+    <h2 class="u">On this page</h2>
+    <ol>
+      <li><a href="#idea"><span class="n">01</span><span>What you&rsquo;re actually doing</span></a></li>
+      <li><a href="#words"><span class="n">02</span><span>Words you&rsquo;ll meet</span></a></li>
+      <li><a href="#done"><span class="n">03</span><span>What &ldquo;done&rdquo; means</span></a></li>
+      <li><a href="#steps"><span class="n">04</span><span>The eleven steps</span></a></li>
+      <li><a href="#rules"><span class="n">05</span><span>Rules you can&rsquo;t bend</span></a></li>
+      <li><a href="#qa"><span class="n">06</span><span>Final QA checklist</span></a></li>
+      <li><a href="#stop"><span class="n">07</span><span>When to stop and ask</span></a></li>
+    </ol>
+  </nav>
+
+  <main class="col">
+
+  <!-- ================= 1. THE IDEA ================= -->
+  <section id="idea" class="sec">
+    <div class="sec-head">
+      <span class="u">01 &mdash; Start here</span>
+      <h2>What you&rsquo;re actually doing</h2>
+      <p class="lede">
+        Nothing on the page changes. You are adding a hidden note for machines that says
+        &ldquo;this bit is a question, and this bit is its answer.&rdquo;
+      </p>
+    </div>
+
+    <div class="stack gap-m prose">
+      <p>
+        Think of a jar of peanut butter. A human can look at it and work out what&rsquo;s inside.
+        A machine can&rsquo;t &mdash; so we print a nutrition label on the back in a fixed format that
+        every machine understands. <strong>Schema markup is that nutrition label, for a web page.</strong>
+      </p>
+      <p>
+        Right now our FAQ pages have no label. Google sees a wall of text and has to <em>guess</em>
+        which line is a question and which paragraph answers it. Usually it doesn&rsquo;t bother
+        guessing &mdash; it just skips the page. Add the label, and the same page becomes eligible to
+        show up as an expandable FAQ in search results, or to be quoted directly by an AI assistant.
+      </p>
+    </div>
+
+    <div class="figure" style="margin-top:28px">
+      <div class="pane">
+        <div class="pane-label u"><span class="glyph">&#128100;</span> What a visitor sees</div>
+        <div class="mock">
+          <div class="mock-h"><span class="hl-q">How fast can you close?</span></div>
+          <p><span class="hl-a">Most cash purchases close in 7 to 14 days.</span></p>
+        </div>
+        <p class="cap">You do not touch a single word of this. It stays exactly as it is.</p>
+      </div>
+      <div class="pane">
+        <div class="pane-label u"><span class="glyph">&lt;/&gt;</span> What the machine reads</div>
+        <div class="jsonbox">
+<span class="punc">{</span>
+  <span class="k">"@type"</span><span class="punc">:</span> "Question"<span class="punc">,</span>
+  <span class="k">"name"</span><span class="punc">:</span> "<span class="hl-q">How fast can you close?</span>"<span class="punc">,</span>
+  <span class="k">"acceptedAnswer"</span><span class="punc">: {</span>
+    <span class="k">"@type"</span><span class="punc">:</span> "Answer"<span class="punc">,</span>
+    <span class="k">"text"</span><span class="punc">:</span> "<span class="hl-a">Most cash purchases close in 7 to 14 days.</span>"
+  <span class="punc">}</span>
+<span class="punc">}</span>
+        </div>
+        <p class="cap">The same words, copied character for character, in a format machines can file.</p>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="swatch q"></i> The question &rarr; goes in <code>name</code></span>
+      <span><i class="swatch a"></i> The answer &rarr; goes in <code>text</code></span>
+    </div>
+
+    <div class="stack gap-m" style="margin-top:28px">
+      <div class="note">
+        <span class="u">Why this job is first in the queue</span>
+        <p>
+          It&rsquo;s <strong>mechanical, not creative</strong> &mdash; no new writing, just copying.
+          It&rsquo;s a <strong>quick win at volume</strong> &mdash; 128 pages, the same fix every time.
+          And it&rsquo;s a <strong>prerequisite</strong> &mdash; other AI-readiness checks get easier to
+          verify once the Q&amp;A structure is spelled out.
+        </p>
+      </div>
+      <div class="warn">
+        <span class="u">The one rule that outranks all the others</span>
+        <p>
+          The label must describe what&rsquo;s really on the page. Marking up a question that a visitor
+          can&rsquo;t actually see &mdash; or wording it differently from the page &mdash; is worse than
+          having no label at all, and can get the page penalised by Google.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= 2. GLOSSARY ================= -->
+  <section id="words" class="sec">
+    <div class="sec-head">
+      <span class="u">02 &mdash; Decoder</span>
+      <h2>Words you&rsquo;ll meet</h2>
+      <p class="lede">Every bit of jargon in this document, in one place. Come back here whenever a step uses a word you don&rsquo;t recognise.</p>
+    </div>
+
+    <dl class="glossary">
+      <div class="term">
+        <dt>Schema markup <span class="lit">/ structured data</span></dt>
+        <dd>The hidden label. A block of text in a fixed format that tells machines what the page&rsquo;s content <em>means</em>, not just what it says.</dd>
+      </div>
+      <div class="term">
+        <dt>JSON-LD</dt>
+        <dd>The particular format we write that label in &mdash; the one with all the curly braces and quotation marks. It&rsquo;s just a strict way of writing &ldquo;this label = this value&rdquo;.</dd>
+      </div>
+      <div class="term">
+        <dt><span class="lit">FAQPage</span></dt>
+        <dd>The specific type of label used for a page of questions and answers. Other types exist (Recipe, Product, Event) &mdash; we only use this one.</dd>
+      </div>
+      <div class="term">
+        <dt>Rich result</dt>
+        <dd>A search listing with extra bits attached &mdash; here, the expandable questions that appear under a link on Google. That&rsquo;s the payoff for doing this.</dd>
+      </div>
+      <div class="term">
+        <dt><span class="lit">@id</span></dt>
+        <dd>A unique name tag for this page&rsquo;s label, so machines don&rsquo;t mix it up with another page&rsquo;s. We build it from the page&rsquo;s own web address plus <code>#faq</code>.</dd>
+      </div>
+      <div class="term">
+        <dt><span class="lit">mainEntity</span></dt>
+        <dd>The list that holds all the questions. Everything between its square brackets is &ldquo;the questions on this page.&rdquo;</dd>
+      </div>
+      <div class="term">
+        <dt>Elementor</dt>
+        <dd>The drag-and-drop page builder we edit WordPress pages with. You&rsquo;ll open a page in it, drop in one block, and save.</dd>
+      </div>
+      <div class="term">
+        <dt>Container &amp; widget</dt>
+        <dd>A <strong>container</strong> is an empty box you drop things into. A <strong>widget</strong> is the thing you drop in. You need the <strong>HTML widget</strong> specifically.</dd>
+      </div>
+      <div class="term">
+        <dt>Cache</dt>
+        <dd>A saved snapshot of the page that the server hands out to be fast. Until it&rsquo;s cleared, visitors (and you) keep seeing the <em>old</em> version of the page.</dd>
+      </div>
+      <div class="term">
+        <dt>Purge the cache</dt>
+        <dd>Throwing that snapshot away so the server rebuilds the page fresh. On WP Engine this hits all ~800 pages at once, which is why only the Lead does it.</dd>
+      </div>
+      <div class="term">
+        <dt>Incognito window</dt>
+        <dd>A private browser window that ignores your saved logins and your own cached copies. It shows you the page the way a stranger sees it.</dd>
+      </div>
+      <div class="term">
+        <dt>View source</dt>
+        <dd>Right-click a page &rarr; &ldquo;View page source&rdquo;. Shows the raw code the browser received. Your label lives here, invisible on the page itself.</dd>
+      </div>
+      <div class="term">
+        <dt>Validator</dt>
+        <dd>A free web tool you paste a URL into. It reads your label and reports mistakes. Two of them are required in Step&nbsp;9.</dd>
+      </div>
+      <div class="term">
+        <dt>Straight vs curly quotes</dt>
+        <dd><code>"</code> is a straight quote and is the only one that works. <code>&ldquo;</code> and <code>&rdquo;</code> are curly quotes; Google Docs inserts them automatically and they silently break the label.</dd>
+      </div>
+      <div class="term">
+        <dt>Escaping a quote</dt>
+        <dd>Writing <code>\"</code> instead of <code>"</code> when a quotation mark appears <em>inside</em> your answer text. The backslash tells the machine &ldquo;this one is part of the sentence, not the end of it.&rdquo;</dd>
+      </div>
+      <div class="term">
+        <dt>AI Readiness tool</dt>
+        <dd>The scanner that produced the 128-page list. It crawls the whole site, so it&rsquo;s slow &mdash; the Lead runs it weekly; you never run it per page.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= 3. DEFINITION OF DONE ================= -->
+  <section id="done" class="sec">
+    <div class="sec-head">
+      <span class="u">03 &mdash; The finish line</span>
+      <h2>What &ldquo;done&rdquo; means</h2>
+      <p class="lede">
+        A page counts as done only when <strong>all seven</strong> of these are true. Marking
+        <code>Done</code> in the tracker is you certifying that every one of them happened.
+      </p>
+    </div>
+
+    <div class="checklist" data-group="dod">
+      <label class="check"><input type="checkbox" id="dod1"><span class="ct">The page has <strong>one</strong> <code>FAQPage</code> label, added through an Elementor <strong>HTML widget</strong>, covering every visible Q&amp;A pair on the page.</span></label>
+      <label class="check"><input type="checkbox" id="dod2"><span class="ct">The question and answer text in the label <strong>matches the visible page text exactly</strong> &mdash; nothing reworded, nothing added, nothing dropped.</span></label>
+      <label class="check"><input type="checkbox" id="dod3"><span class="ct">It passes <a href="https://validator.schema.org/">validator.schema.org</a> with <strong>zero errors</strong>.</span></label>
+      <label class="check"><input type="checkbox" id="dod4"><span class="ct"><a href="https://search.google.com/test/rich-results">Google&rsquo;s Rich Results Test</a> shows the page as FAQ-eligible.</span></label>
+      <label class="check"><input type="checkbox" id="dod5"><span class="ct">Cache is purged (WP Engine + Elementor) and, in an incognito window, the page&rsquo;s source really contains the script block.</span></label>
+      <label class="check"><input type="checkbox" id="dod6"><span class="ct"><strong>Only after everything above passes</strong>, the tracker row is set to <code>Progress = Done</code> with today&rsquo;s date.</span></label>
+      <label class="check"><input type="checkbox" id="dod7"><span class="ct">It no longer appears in the AI Readiness tool&rsquo;s &ldquo;FAQ without schema&rdquo; report on the next scan.</span></label>
+    </div>
+    <div class="meter" data-meter="dod">
+      <div class="bar"><div class="fill"></div></div>
+      <span class="count">0 of 7</span>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= 4. STEPS ================= -->
+  <section id="steps" class="sec">
+    <div class="sec-head">
+      <span class="u">04 &mdash; The work</span>
+      <h2>The eleven steps</h2>
+      <p class="lede">
+        Do these in order, one page at a time. Steps 1&ndash;10 are yours; step 11 belongs to the Project Lead.
+      </p>
+    </div>
+
+    <div class="steps">
+
+      <!-- 1 -->
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-top"><h3>Get your assigned URLs</h3><span class="tag">In the sheet</span></div>
+        <div class="step-body">
+          <p>
+            Open the <a href="https://docs.google.com/spreadsheets/d/1zy-ye4GGKH1xWCMS2Ie0l1yn9sOHRdtSgtzHuOs2sGM/edit?gid=0#gid=0"><code>task</code> tab</a>
+            and find your section &mdash; rows are grouped by name. Pick the next row with nothing in
+            <code>Progress</code>, and set <code>Progress = ongoing</code> as you start it.
+          </p>
+          <div class="note">
+            <span class="u">In plain English</span>
+            <p>This sheet is the ticket system &mdash; there is no separate tool. Setting <code>ongoing</code> is how you tell everyone else that row is taken, so two people don&rsquo;t do the same page twice.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-top"><h3>Confirm it&rsquo;s genuinely FAQ content</h3><span class="tag">On the page</span></div>
+        <div class="step-body">
+          <p>
+            Open the page and look for real, visible question-and-answer pairs &mdash; an FAQ section,
+            an accordion, a Q&amp;A block.
+          </p>
+          <p>
+            If the page doesn&rsquo;t actually have Q&amp;A-formatted content, that&rsquo;s a false positive
+            from the scanning tool. Leave <code>Progress</code> as it is (do <em>not</em> mark <code>Done</code>),
+            write the reason in the <code>Issue</code> column &mdash; e.g. &ldquo;not real FAQ content&rdquo; &mdash;
+            and tell the Lead.
+          </p>
+          <div class="warn">
+            <span class="u">Don&rsquo;t force it</span>
+            <p>Never bend content that isn&rsquo;t a question and answer into a question and answer. Promotional copy and testimonials are not FAQs.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-top"><h3>Copy the exact visible text</h3><span class="tag">Notepad / VS Code</span></div>
+        <div class="step-body">
+          <p>
+            Nothing needs rewriting. For every Q&amp;A pair on the page, copy the question (the heading)
+            and the answer text <strong>verbatim</strong> &mdash; same wording, same punctuation.
+          </p>
+          <p>
+            The question doesn&rsquo;t have to be phrased as a literal question. A heading like
+            &ldquo;Why Some Sellers Choose an As-Is Cash Sale&rdquo; is a perfectly valid FAQ question for
+            schema purposes, as long as the text directly below it answers it.
+          </p>
+          <div class="warn">
+            <span class="u">Never use Google Docs for this</span>
+            <p>
+              Google Docs silently turns straight quotes (<code>"</code>) into curly quotes
+              (<code>&ldquo;</code>&nbsp;<code>&rdquo;</code>). Curly quotes break the label, and nothing warns
+              you &mdash; it just fails validation later with a confusing error. Type into a
+              <strong>plain text editor</strong> (Notepad, VS Code) instead.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-top"><h3>Build the JSON-LD</h3><span class="tag">Notepad / VS Code</span></div>
+        <div class="step-body">
+          <p>Start from this template. Then make exactly two kinds of change:</p>
+          <ol>
+            <li>Set <code>@id</code> to the <strong>live web address of that exact page</strong>, followed by <code>#faq</code>.</li>
+            <li>Include one <code>Question</code> block per Q&amp;A pair already on the page &mdash; add or delete blocks so the count matches the page exactly.</li>
+          </ol>
+
+          <div class="codewrap">
+            <div class="codebar">
+              <span class="u">Template &mdash; JSON-LD</span>
+              <span style="display:flex;align-items:center;gap:10px">
+                <span class="copy-status" id="copyStatus" role="status"></span>
+                <button class="copy" type="button" id="copyBtn">Copy</button>
+              </span>
+            </div>
+            <pre id="tpl"><code>{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://www.example.com/this-exact-page-url/#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Exact visible question/heading text goes here",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Paste the answer already on the page here. Plain text only - no HTML tags."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Second question/heading on the page",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Paste that answer already on the page here too."
+      }
+    }
+  ]
+}</code></pre>
+          </div>
+
+          <div class="note">
+            <span class="u">Three things that trip people up</span>
+            <p>
+              <strong>Strip HTML tags</strong> out of every <code>text</code> value &mdash; no
+              <code>&lt;b&gt;</code>, no <code>&lt;a&gt;</code>, plain words only.
+              <strong>Escape internal quotes</strong>: a quotation mark inside an answer must be written
+              as <code>\"</code>.
+              <strong>Never invent a question</strong> &mdash; you are only wrapping the heading and
+              paragraph that already exist.
+            </p>
+          </div>
+          <div class="warn">
+            <span class="u">If a question has no answer under it</span>
+            <p>Stop and flag it (see <a href="#stop">When to stop and ask</a>). Do not write an answer yourself.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-top"><h3>Insert it in Elementor</h3><span class="tag">In Elementor</span></div>
+        <div class="step-body">
+          <ol>
+            <li>Edit the page in Elementor.</li>
+            <li>Scroll to the bottom of the page and add a new <strong>container</strong>. Leave it completely unstyled &mdash; it&rsquo;s just a wrapper, nothing visual goes in it.</li>
+            <li>Drag in the <strong>HTML widget</strong>. Not Text Editor. Not Shortcode.</li>
+            <li>Paste your whole block from Step 4 into it, wrapped in script tags:</li>
+          </ol>
+          <div class="codewrap">
+            <div class="codebar"><span class="u">What goes in the HTML widget</span></div>
+            <pre><code>&lt;script type="application/ld+json"&gt;
+{ ...your JSON here... }
+&lt;/script&gt;</code></pre>
+          </div>
+          <div class="note">
+            <span class="u">Why the widget choice matters</span>
+            <p>The Text Editor widget &ldquo;escapes&rdquo; code &mdash; it treats your label as words to display rather than instructions, which breaks it. Only the HTML widget passes it through untouched.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-top"><h3>Update / publish</h3><span class="tag">In Elementor</span></div>
+        <div class="step-body">
+          <p>Save or publish the page in Elementor. Nothing visible should change for a visitor.</p>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-top"><h3>Ask the Lead to purge cache</h3><span class="tag">Ask the Lead</span></div>
+        <div class="step-body">
+          <div class="warn">
+            <span class="u">Do not clear the WP Engine cache yourself</span>
+            <p>
+              &ldquo;Clear all caches&rdquo; is a site-wide action &mdash; it affects all ~800 pages, not just
+              yours. Message the Project Lead when your page is published and ask them to purge it,
+              or get their go-ahead before you do it.
+            </p>
+          </div>
+          <p>
+            Mention it too if the page looks off after saving, so they can also run
+            <strong>Elementor &rarr; Tools &rarr; Regenerate CSS &amp; Data</strong>.
+          </p>
+          <div class="note">
+            <span class="u">Don&rsquo;t skip this</span>
+            <p>
+              Skipping the purge is the most common way to &ldquo;finish&rdquo; a page and then fail your own
+              checks in Step 9 &mdash; you&rsquo;d still be looking at the cached, pre-fix version of the page.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-top"><h3>Confirm it actually landed</h3><span class="tag">Check</span></div>
+        <div class="step-body">
+          <p>
+            Open the live page in an <strong>incognito window</strong>, view source (the real page source,
+            not the Elementor editor), and confirm the
+            <code>&lt;script type="application/ld+json"&gt;</code> block is really there, exactly as you pasted it.
+          </p>
+          <div class="note">
+            <span class="u">Two different checks, both required</span>
+            <p>
+              &ldquo;Is the FAQ visible on the page?&rdquo; is a <em>content</em> check.
+              &ldquo;Is the script block in the source?&rdquo; is a <em>markup</em> check. Both have to be true.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="step">
+        <div class="step-num">9</div>
+        <div class="step-top"><h3>Validate</h3><span class="tag">Check</span></div>
+        <div class="step-body">
+          <p>
+            Don&rsquo;t use the AI Readiness tool for this &mdash; it crawls the whole ~800-page site, so
+            it&rsquo;s far too slow to re-check one page. Per page, do these three:
+          </p>
+          <ol>
+            <li>
+              <strong><a href="https://validator.schema.org/">validator.schema.org</a></strong> &mdash; paste in the
+              live page URL (or the JSON-LD directly) and confirm <strong>zero errors</strong>. This is your
+              fast self-check while you&rsquo;re still working.
+            </li>
+            <li>
+              <strong><a href="https://search.google.com/test/rich-results">Google Rich Results Test</a></strong> &mdash;
+              confirm the page shows as FAQ-eligible. Take a screenshot for your own records; the tracker
+              has no column for it, but keep it in case a page gets questioned later.
+            </li>
+            <li>
+              <strong>Look at the live page with your own eyes.</strong> Every question and answer you put
+              in the JSON-LD must genuinely be displayed to a normal visitor &mdash; not hidden, not removed,
+              not behind a login.
+            </li>
+          </ol>
+          <div class="warn">
+            <span class="u">The third check matters as much as the first two</span>
+            <p>Schema describing content that isn&rsquo;t visibly on the page is invalid and can get the page penalised, even if both validators pass.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="step">
+        <div class="step-num">10</div>
+        <div class="step-top"><h3>Update the tracker</h3><span class="tag">In the sheet</span></div>
+        <div class="step-body">
+          <p>
+            In the <code>task</code> tab, fill in today&rsquo;s <code>Date</code> and set
+            <code>Progress = Done</code> &mdash; only once every check in Step 9 has actually passed.
+          </p>
+          <div class="note">
+            <span class="u">What &ldquo;Done&rdquo; signals to everyone else</span>
+            <p>
+              <code>Done</code> is read as &ldquo;this page is fully verified.&rdquo; Never use it as a
+              placeholder while something is still pending.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 -->
+      <div class="step lead">
+        <div class="step-num">11</div>
+        <div class="step-top"><h3>The Lead&rsquo;s weekly re-scan</h3><span class="tag">Project Lead only</span></div>
+        <div class="step-body">
+          <p>
+            The Project Lead re-runs the AI Readiness tool weekly &mdash; this full-site crawl is a
+            Lead-only step, never a per-page one &mdash; and confirms completed pages have dropped off the
+            &ldquo;FAQ without schema&rdquo; report. They also spot-check about 10% of <code>Done</code> rows
+            against validator.schema.org and the live page.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= 5. RULES ================= -->
+  <section id="rules" class="sec">
+    <div class="sec-head">
+      <span class="u">05 &mdash; Non-negotiable</span>
+      <h2>Rules you can&rsquo;t bend</h2>
+      <p class="lede">Eight things that are never a judgement call. If a page seems to require breaking one of these, that&rsquo;s an escalation, not a decision.</p>
+    </div>
+
+    <ul class="rules">
+      <li>
+        <span class="no">01</span>
+        <span class="txt"><strong>One <code>FAQPage</code> block per page.</strong>
+        <span class="why">Never stack duplicates &mdash; two labels on one page conflict with each other.</span></span>
+      </li>
+      <li>
+        <span class="no">02</span>
+        <span class="txt"><strong>Never copy another page&rsquo;s <code>@id</code>.</strong>
+        <span class="why">Always swap in the live URL of the exact page you&rsquo;re working on.</span></span>
+      </li>
+      <li>
+        <span class="no">03</span>
+        <span class="txt"><strong>HTML widget only.</strong>
+        <span class="why">Text Editor and Shortcode widgets escape or mangle the <code>&lt;script&gt;</code> tag.</span></span>
+      </li>
+      <li>
+        <span class="no">04</span>
+        <span class="txt"><strong>Never purge the WP Engine cache yourself.</strong>
+        <span class="why">It&rsquo;s site-wide across ~800 pages &mdash; always go through the Project Lead (Step 7).</span></span>
+      </li>
+      <li>
+        <span class="no">05</span>
+        <span class="txt"><strong>Type JSON in a plain text editor, never Google Docs.</strong>
+        <span class="why">Silent curly-quote corruption (Step 3).</span></span>
+      </li>
+      <li>
+        <span class="no">06</span>
+        <span class="txt"><strong>Strip HTML tags out of every answer, and escape internal quotes as <code>\"</code>.</strong>
+        <span class="why">Both break the label if left in.</span></span>
+      </li>
+      <li>
+        <span class="no">07</span>
+        <span class="txt"><strong>Don&rsquo;t touch the visible FAQ content to make this fix.</strong>
+        <span class="why">If the on-page copy changes later, the schema has to be updated to match &mdash; mismatched schema and content is worse than no schema at all.</span></span>
+      </li>
+      <li>
+        <span class="no">08</span>
+        <span class="txt"><strong>If a question has no answer text under it, flag it.</strong>
+        <span class="why">Don&rsquo;t write one yourself.</span></span>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= 6. QA CHECKLIST ================= -->
+  <section id="qa" class="sec">
+    <div class="sec-head">
+      <span class="u">06 &mdash; Before you mark Done</span>
+      <h2>Final QA checklist</h2>
+      <p class="lede">
+        Run this list on every page. These are the mistakes that actually happen &mdash; tick all
+        thirteen, then and only then go set <code>Progress = Done</code>.
+      </p>
+    </div>
+
+    <div class="checklist" data-group="qa">
+      <label class="check"><input type="checkbox" id="qa1"><span class="ct">Schema question and answer text matches the visible page text <strong>exactly</strong></span></label>
+      <label class="check"><input type="checkbox" id="qa2"><span class="ct">Only <strong>one</strong> <code>FAQPage</code> block on the page &mdash; no stacked duplicates</span></label>
+      <label class="check"><input type="checkbox" id="qa3"><span class="ct"><code>@id</code> is this page&rsquo;s own live URL + <code>#faq</code>, not copied from another page</span></label>
+      <label class="check"><input type="checkbox" id="qa4"><span class="ct">Added via the <strong>HTML widget</strong>, not Text Editor or Shortcode</span></label>
+      <label class="check"><input type="checkbox" id="qa5"><span class="ct">Answer <code>text</code> is plain text &mdash; no <code>&lt;b&gt;</code>, <code>&lt;a&gt;</code> or other HTML tags inside it</span></label>
+      <label class="check"><input type="checkbox" id="qa6"><span class="ct">Internal double quotes in answer text are escaped as <code>\"</code></span></label>
+      <label class="check"><input type="checkbox" id="qa7"><span class="ct">Didn&rsquo;t mark up promotional copy, testimonials, or other non-Q&amp;A content as &ldquo;questions&rdquo;</span></label>
+      <label class="check"><input type="checkbox" id="qa8"><span class="ct">Cache purge requested from the Lead (not done yourself) and confirmed complete</span></label>
+      <label class="check"><input type="checkbox" id="qa9"><span class="ct">Viewed the live page in incognito; view source confirms the script block is present</span></label>
+      <label class="check"><input type="checkbox" id="qa10"><span class="ct">Ran validator.schema.org and got zero errors</span></label>
+      <label class="check"><input type="checkbox" id="qa11"><span class="ct">Ran the Rich Results Test and confirmed FAQ-eligible</span></label>
+      <label class="check"><input type="checkbox" id="qa12"><span class="ct">Opened the live page and visually confirmed every Q&amp;A pair in the schema is actually displayed there</span></label>
+      <label class="check"><input type="checkbox" id="qa13"><span class="ct">Page still displays normally to users &mdash; schema is invisible markup, so nothing visible should have changed</span></label>
+    </div>
+    <div class="meter" data-meter="qa">
+      <div class="bar"><div class="fill"></div></div>
+      <span class="count">0 of 13</span>
+    </div>
+    <p style="margin-top:14px;font-size:14.5px;color:var(--ink-mute)">
+      Ticks are remembered in this browser only, so you can work through a page and come back.
+      Clear them for the next page with the button below.
+      <button class="copy" type="button" id="resetBtn" style="margin-left:6px">Reset both checklists</button>
+    </p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= 7. ESCALATION ================= -->
+  <section id="stop" class="sec">
+    <div class="sec-head">
+      <span class="u">07 &mdash; Escalation</span>
+      <h2>When to stop and ask</h2>
+      <p class="lede">
+        Hit any of these five and you stop. Leave <code>Progress</code> as it is, write the reason in the
+        <code>Issue</code> column, and message the Project Lead directly. Don&rsquo;t guess &mdash; a guess
+        here creates work for someone else later.
+      </p>
+    </div>
+
+    <div class="stops">
+      <div class="stopcard">
+        <span class="mark">!</span>
+        <p>The page isn&rsquo;t real FAQ content &mdash; the scanning tool got it wrong.</p>
+      </div>
+      <div class="stopcard">
+        <span class="mark">!</span>
+        <p>A question on the page has no answer text underneath it.</p>
+      </div>
+      <div class="stopcard">
+        <span class="mark">!</span>
+        <p>The page already has a <em>different</em> <code>FAQPage</code> block, or a conflicting one.</p>
+      </div>
+      <div class="stopcard">
+        <span class="mark">!</span>
+        <p>You&rsquo;re unsure whether something counts as a &ldquo;question&rdquo; &mdash; e.g. a single Q&amp;A buried in body text.</p>
+      </div>
+      <div class="stopcard">
+        <span class="mark">!</span>
+        <p>Elementor won&rsquo;t let you add a container or HTML widget &mdash; locked template, page-builder restriction, or similar.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+</div>
+</div>
+
+<footer>
+  <div class="shell">
+    <p>
+      SOP #1 &mdash; Add FAQPage schema to FAQ content. Work is tracked in the
+      <a href="https://docs.google.com/spreadsheets/d/1zy-ye4GGKH1xWCMS2Ie0l1yn9sOHRdtSgtzHuOs2sGM/edit?gid=0#gid=0"><code>task</code> tab</a>
+      of the project sheet (SSO-restricted to the Twinhomebuyer org); a plain-text mirror of the same
+      columns lives in <code>faq-schema-tracker-template.csv</code>.
+    </p>
+    <p class="u" style="color:var(--ink-mute)">Questions &rarr; Project Lead</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var KEY = "faqsop:";
+
+  function safeGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+  function safeSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
+  function safeDel(k) { try { window.localStorage.removeItem(k); } catch (e) {} }
+
+  function refresh(group) {
+    var list = document.querySelector('[data-group="' + group + '"]');
+    var meter = document.querySelector('[data-meter="' + group + '"]');
+    if (!list || !meter) return;
+    var boxes = list.querySelectorAll('input[type="checkbox"]');
+    var done = 0;
+    for (var i = 0; i < boxes.length; i++) { if (boxes[i].checked) done++; }
+    meter.querySelector('.count').textContent = done + ' of ' + boxes.length;
+    meter.querySelector('.fill').style.width = (boxes.length ? (done / boxes.length) * 100 : 0) + '%';
+  }
+
+  var groups = ['dod', 'qa'];
+  groups.forEach(function (group) {
+    var list = document.querySelector('[data-group="' + group + '"]');
+    if (!list) return;
+    var boxes = list.querySelectorAll('input[type="checkbox"]');
+    for (var i = 0; i < boxes.length; i++) {
+      (function (box) {
+        if (safeGet(KEY + box.id) === '1') box.checked = true;
+        box.addEventListener('change', function () {
+          if (box.checked) { safeSet(KEY + box.id, '1'); } else { safeDel(KEY + box.id); }
+          refresh(group);
+        });
+      })(boxes[i]);
+    }
+    refresh(group);
+  });
+
+  var reset = document.getElementById('resetBtn');
+  if (reset) {
+    reset.addEventListener('click', function () {
+      groups.forEach(function (group) {
+        var list = document.querySelector('[data-group="' + group + '"]');
+        if (!list) return;
+        var boxes = list.querySelectorAll('input[type="checkbox"]');
+        for (var i = 0; i < boxes.length; i++) { boxes[i].checked = false; safeDel(KEY + boxes[i].id); }
+        refresh(group);
+      });
+    });
+  }
+
+  var btn = document.getElementById('copyBtn');
+  var tpl = document.getElementById('tpl');
+  var status = document.getElementById('copyStatus');
+  if (btn && tpl) {
+    btn.addEventListener('click', function () {
+      var text = tpl.textContent;
+      function ok() { status.textContent = 'Copied'; setTimeout(function () { status.textContent = ''; }, 2200); }
+      function fallback() {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          var done = document.execCommand('copy');
+          document.body.removeChild(ta);
+          if (done) { ok(); return; }
+        } catch (e) {}
+        status.textContent = 'Copying is blocked here — select the text and copy it';
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(ok, fallback);
+      } else { fallback(); }
+    });
+  }
+
+  var rail = document.querySelectorAll('.rail a');
+  var sections = [];
+  for (var i = 0; i < rail.length; i++) {
+    var el = document.querySelector(rail[i].getAttribute('href'));
+    if (el) sections.push({ link: rail[i], el: el });
+  }
+  if (sections.length && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        for (var j = 0; j < sections.length; j++) {
+          sections[j].link.classList.toggle('on', sections[j].el === entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+    sections.forEach(function (s) { io.observe(s.el); });
+  }
+})();
+</script>
